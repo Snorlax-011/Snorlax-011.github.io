@@ -5,6 +5,13 @@ window.APP_CONFIG = {
     repositoryLimit: 100,
     theme: 'dark',
     animations: true,
+
+     name: 'Abhijith',
+    title: 'Tech Enthusiast',
+    bio: 'Documenting my learning journey.',
+    siteTitle: 'My Learning Progress',
+    terminalGreeting: 'Welcome to my learning journey! 📚'
+};
     
     // Personal Information
     name: 'Abhijith',
