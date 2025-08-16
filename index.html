@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhijith's Website</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS variables for easy theme customization */
+        :root {
+            --background-color: #0a0a0a;
+            --terminal-color: #0d1117;
+            --text-color: #c9d1d9;
+            --glow-color: #2f81f7; /* A nice blue glow */
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Fira Code', monospace;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        
+        /* The container for the particle animation background */
+        #tsparticles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Place it behind everything else */
+        }
+
+        /* The main container to center the terminal */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* The terminal window */
+        .terminal {
+            width: 100%;
+            max-width: 700px;
+            background-color: rgba(13, 17, 23, 0.8); /* Semi-transparent */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(47, 129, 247, 0.2);
+            padding: 2rem;
+            position: relative;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .red { background-color: #ff5f56; }
+        .yellow { background-color: #ffbd2e; }
+        .green { background-color: #27c93f; }
+
+        .terminal-content p {
+            margin: 0 0 0.5rem;
+            line-height: 1.5;
+            font-size: 1.1rem;
+            white-space: pre-wrap;
+        }
+        
+        .prompt::before {
+            content: '$ ';
+            color: var(--glow-color);
+        }
+
+        /* Blinking cursor animation */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.2rem;
+            background-color: var(--glow-color);
+            margin-left: 5px;
+            animation: blink 1s steps(1) infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="tsparticles"></div>
+
+    <div class="container">
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-button red"></div>
+                <div class="terminal-button yellow"></div>
+                <div class="terminal-button green"></div>
+            </div>
+            <div class="terminal-content">
+                <p><span class="prompt"></span><span id="line1"></span></p>
+                <p><span class="prompt"></span><span id="line2"></span></p>
+                <p><span class="prompt"></span><span id="line3"></span><span class="cursor"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    
+    <script>
+        // --- Particle Animation Setup ---
+        tsParticles.load("tsparticles", {
+            background: {
+                color: { value: "#0a0a0a" }
+            },
+            fpsLimit: 60,
+            interactivity: {
+                events: {
+                    onHover: { enable: true, mode: "repulse" },
+                    resize: true,
+                },
+                modes: {
+                    repulse: { distance: 100, duration: 0.4 },
+                },
+            },
+            particles: {
+                color: { value: "#ffffff" },
+                links: {
+                    color: "#ffffff",
+                    distance: 150,
+                    enable: true,
+                    opacity: 0.1,
+                    width: 1,
+                },
+                collisions: { enable: true },
+                move: {
+                    direction: "none",
+                    enable: true,
+                    outModes: { default: "bounce" },
+                    random: false,
+                    speed: 1,
+                    straight: false,
+                },
+                number: {
+                    density: { enable: true, area: 800 },
+                    value: 80,
+                },
+                opacity: { value: 0.1 },
+                shape: { type: "circle" },
+                size: { value: { min: 1, max: 5 } },
+            },
+            detectRetina: true,
+        });
+
+        // --- Typing Animation Script ---
+        const lines = [
+            { text: "Abhijith's website😉", element: document.getElementById('line1'), speed: 100 },
+            { text: "Welcome to my github website.", element: document.getElementById('line2'), speed: 50 },
+            { text: "Brace yourselves!", element: document.getElementById('line3'), speed: 80 }
+        ];
+        
+        async function typeAllLines() {
+            for (const line of lines) {
+                await typeWriter(line.text, line.element, line.speed);
+            }
+        }
+        
+        function typeWriter(txt, element, speed) {
+            return new Promise(resolve => {
+                let i = 0;
+                function type() {
+                    if (i < txt.length) {
+                        element.innerHTML += txt.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve(); // Resolve the promise when the line is finished
+                    }
+                }
+                type();
+            });
+        }
+        
+        // Start the typing animation when the page loads
+        document.addEventListener('DOMContentLoaded', typeAllLines);
+    </script>
+</body>
+</html>
