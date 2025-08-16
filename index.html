@@ -3,353 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abhijith Snorlax | Tech Enthusiast</title>
-
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Abhijith Snorlax - Full Stack Developer, GitHub Tech-Mastery repository showcase, and innovative web solutions">
-    <meta name="keywords" content="Full Stack Developer, JavaScript, Python, React, Node.js, GitHub, Tech Mastery">
-    <meta name="author" content="Abhijith Snorlax">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://snorlax-011.github.io/">
-    <meta property="og:title" content="Abhijith Snorlax | Full Stack Developer">
-    <meta property="og:description" content="Explore my tech journey through my GitHub repositories and projects">
-    <meta property="og:image" content="https://snorlax-011.github.io/assets/og-image.png">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://snorlax-011.github.io/">
-    <meta property="twitter:title" content="Abhijith Snorlax | Full Stack Developer">
-    <meta property="twitter:description" content="Explore my tech journey through my GitHub repositories and projects">
-    <meta property="twitter:image" content="https://snorlax-011.github.io/assets/og-image.png">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-
-    <!-- Progressive Web App Manifest -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Theme Colors -->
-    <meta name="theme-color" content="#2f81f7">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="css/styles.css" as="style">
-    <link rel="preload" href="js/app.js" as="script">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/styles.css">
+    <title>Diagnostic - Abhijith's Website</title>
+    <style>
+        body {
+            background: #0a0a0a;
+            color: #c9d1d9;
+            font-family: 'Fira Code', monospace;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .diagnostic {
+            background: rgba(13, 17, 23, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+        }
+        .success { color: #27c93f; }
+        .error { color: #da3633; }
+        .warning { color: #d29922; }
+        .info { color: #2f81f7; }
+        pre { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 4px; overflow-x: auto; }
+    </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="loading-content">
-            <div class="loading-logo">
-                <div class="terminal-cursor"></div>
-            </div>
-            <div class="loading-text">
-                <span class="loading-message">Initializing Tech-Mastery...</span>
-                <div class="loading-progress">
-                    <div class="loading-bar"></div>
-                </div>
-            </div>
-        </div>
+    <div class="diagnostic">
+        <h1 class="info">🔧 Website Diagnostic Tool</h1>
+        <p>This page will help identify what's preventing your advanced website from loading.</p>
     </div>
 
-    <!-- Particle Background -->
-    <div id="particles-js"></div>
+    <div class="diagnostic">
+        <h2>📋 File Check Results</h2>
+        <div id="file-results">Checking files...</div>
+    </div>
 
-    <!-- Navigation -->
-    <nav class="nav-header">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <span class="logo-text">
-                    <i class="fas fa-terminal"></i>
-                    <span>Abhijith.dev</span>
-                </span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#analytics" class="nav-link">Analytics</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
-            </ul>
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
+    <div class="diagnostic">
+        <h2>🌐 External Resources</h2>
+        <div id="external-results">Checking external resources...</div>
+    </div>
 
-    <!-- Main Container -->
-    <main class="main-container">
-        <!-- Hero Section -->
-        <section id="home" class="hero-section">
-            <div class="container">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <div class="terminal-controls">
-                            <div class="terminal-button red"></div>
-                            <div class="terminal-button yellow"></div>
-                            <div class="terminal-button green"></div>
-                        </div>
-                        <div class="terminal-title">abhijith@tech-mastery:~$</div>
-                    </div>
-                    <div class="terminal-content">
-                        <div class="terminal-output">
-                            <p><span class="prompt">$ </span><span id="cmd-1" class="typed-text"></span></p>
-                            <p><span class="prompt">$ </span><span id="cmd-2" class="typed-text"></span></p>
-                            <p><span class="prompt">$ </span><span id="cmd-3" class="typed-text"></span></p>
-                            <div class="github-integration">
-                                <p><span class="prompt">$ </span><span id="github-status" class="typed-text"></span></p>
-                                <div id="repo-showcase" class="repo-showcase">
-                                    <div class="repo-stats" id="repo-stats"></div>
-                                    <div class="repo-actions" id="repo-actions"></div>
-                                </div>
-                            </div>
-                            <p><span class="prompt">$ </span><span id="final-cmd" class="typed-text"></span><span class="cursor"></span></p>
-                        </div>
-                    </div>
-                </div>
+    <div class="diagnostic">
+        <h2>🐛 JavaScript Errors</h2>
+        <div id="error-results">Monitoring for errors...</div>
+    </div>
 
-                <!-- Quick Stats Panel -->
-                <div class="stats-panel" id="stats-panel">
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="0" id="total-repos">0</div>
-                        <div class="stat-label">Repositories</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="0" id="total-stars">0</div>
-                        <div class="stat-label">Total Stars</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="0" id="total-commits">0</div>
-                        <div class="stat-label">Commits</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number" data-target="0" id="languages-count">0</div>
-                        <div class="stat-label">Languages</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="diagnostic">
+        <h2>💡 Recommendations</h2>
+        <div id="recommendations">Analyzing...</div>
+    </div>
 
-        <!-- Projects Section -->
-        <section id="projects" class="projects-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="prompt">$ </span>ls -la ~/projects
-                    </h2>
-                    <div class="section-controls">
-                        <div class="search-container">
-                            <input type="text" id="project-search" placeholder="Search projects..." class="search-input">
-                            <i class="fas fa-search search-icon"></i>
-                        </div>
-                        <div class="filter-buttons">
-                            <button class="filter-btn active" data-filter="all">All</button>
-                            <button class="filter-btn" data-filter="featured">Featured</button>
-                            <button class="filter-btn" data-filter="recent">Recent</button>
-                        </div>
-                        <div class="view-toggle">
-                            <button class="view-btn active" data-view="grid"><i class="fas fa-th"></i></button>
-                            <button class="view-btn" data-view="list"><i class="fas fa-list"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Project Grid -->
-                <div class="projects-grid" id="projects-grid">
-                    <!-- Projects will be dynamically loaded here -->
-                    <div class="project-skeleton" style="display: none;">
-                        <div class="skeleton-header"></div>
-                        <div class="skeleton-content">
-                            <div class="skeleton-line"></div>
-                            <div class="skeleton-line short"></div>
-                        </div>
-                        <div class="skeleton-footer"></div>
-                    </div>
-                </div>
-
-                <!-- Load More Button -->
-                <div class="load-more-container">
-                    <button id="load-more-projects" class="btn-primary">
-                        <i class="fas fa-download"></i>
-                        Load More Projects
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="skills-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="prompt">$ </span>cat ~/skills.json
-                    </h2>
-                </div>
-
-                <div class="skills-container">
-                    <!-- Language Statistics -->
-                    <div class="skill-category">
-                        <h3 class="category-title">
-                            <i class="fas fa-code"></i>
-                            Programming Languages
-                        </h3>
-                        <div class="language-stats" id="language-stats">
-                            <!-- Dynamic language data -->
-                        </div>
-                    </div>
-
-                    <!-- Technology Stack -->
-                    <div class="skill-category">
-                        <h3 class="category-title">
-                            <i class="fas fa-layer-group"></i>
-                            Technology Stack
-                        </h3>
-                        <div class="tech-stack" id="tech-stack">
-                            <!-- Dynamic tech stack -->
-                        </div>
-                    </div>
-
-                    <!-- Contribution Graph -->
-                    <div class="skill-category">
-                        <h3 class="category-title">
-                            <i class="fas fa-chart-line"></i>
-                            Contribution Activity
-                        </h3>
-                        <div class="contribution-graph" id="contribution-graph">
-                            <!-- Dynamic contribution graph -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Analytics Section -->
-        <section id="analytics" class="analytics-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="prompt">$ </span>github --analytics --detailed
-                    </h2>
-                </div>
-
-                <div class="analytics-dashboard">
-                    <!-- Performance Metrics -->
-                    <div class="analytics-card">
-                        <h3 class="card-title">
-                            <i class="fas fa-tachometer-alt"></i>
-                            Performance Metrics
-                        </h3>
-                        <div class="metrics-grid" id="performance-metrics">
-                            <!-- Dynamic performance data -->
-                        </div>
-                    </div>
-
-                    <!-- Repository Health -->
-                    <div class="analytics-card">
-                        <h3 class="card-title">
-                            <i class="fas fa-heartbeat"></i>
-                            Repository Health
-                        </h3>
-                        <div class="health-indicators" id="repo-health">
-                            <!-- Dynamic health indicators -->
-                        </div>
-                    </div>
-
-                    <!-- Activity Timeline -->
-                    <div class="analytics-card full-width">
-                        <h3 class="card-title">
-                            <i class="fas fa-timeline"></i>
-                            Recent Activity
-                        </h3>
-                        <div class="activity-timeline" id="activity-timeline">
-                            <!-- Dynamic activity timeline -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        <span class="prompt">$ </span>whoami && contact --info
-                    </h2>
-                </div>
-
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <i class="fab fa-github"></i>
-                            <a href="https://github.com/Snorlax-011" target="_blank">GitHub</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fab fa-linkedin"></i>
-                            <a href="#" target="_blank">LinkedIn</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:hello@abhijith.dev">Email</a>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-globe"></i>
-                            <a href="https://snorlax-011.github.io/Tech-Mastery/" target="_blank">Tech-Mastery</a>
-                        </div>
-                    </div>
-
-                    <div class="terminal-footer">
-                        <p>
-                            <span class="prompt">$ </span>echo "Thanks for visiting! 🚀"
-                        </p>
-                        <p class="footer-text">
-                            Built with ❤️ using vanilla JavaScript, advanced GitHub APIs, and lots of 🔥
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Back to Top -->
-    <button id="back-to-top" class="back-to-top">
-        <i class="fas fa-chevron-up"></i>
-    </button>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/github-api.js"></script>
-    <script src="js/utils.js"></script>
-    <script src="js/animations.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/app.js"></script>
-
-    <!-- Service Worker -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => console.log('SW registered: ', registration))
-                    .catch(registrationError => console.log('SW registration failed: ', registrationError));
-            });
+        const fileResults = document.getElementById('file-results');
+        const externalResults = document.getElementById('external-results');
+        const errorResults = document.getElementById('error-results');
+        const recommendations = document.getElementById('recommendations');
+
+        let errors = [];
+        let issues = [];
+
+        // Check for JavaScript errors
+        window.addEventListener('error', (e) => {
+            errors.push(`Error: ${e.message} at ${e.filename}:${e.lineno}`);
+            updateErrorResults();
+        });
+
+        // Check for unhandled promise rejections
+        window.addEventListener('unhandledrejection', (e) => {
+            errors.push(`Unhandled Promise: ${e.reason}`);
+            updateErrorResults();
+        });
+
+        function updateErrorResults() {
+            if (errors.length === 0) {
+                errorResults.innerHTML = '<span class="success">✅ No JavaScript errors detected</span>';
+            } else {
+                errorResults.innerHTML = '<span class="error">❌ JavaScript Errors Found:</span><pre>' + 
+                    errors.join('\n') + '</pre>';
+            }
         }
+
+        // Check if files exist by trying to fetch them
+        async function checkFiles() {
+            const files = [
+                'css/styles.css',
+                'js/config.js',
+                'js/utils.js',
+                'js/animations.js',
+                'js/components.js',
+                'js/github-api.js',
+                'js/app.js',
+                'sw.js'
+            ];
+
+            let results = [];
+
+            for (const file of files) {
+                try {
+                    const response = await fetch(file, { method: 'HEAD' });
+                    if (response.ok) {
+                        results.push(`<span class="success">✅ ${file} - Found</span>`);
+                    } else {
+                        results.push(`<span class="error">❌ ${file} - Missing (${response.status})</span>`);
+                        issues.push(`Missing file: ${file}`);
+                    }
+                } catch (error) {
+                    results.push(`<span class="error">❌ ${file} - Error: ${error.message}</span>`);
+                    issues.push(`File error: ${file} - ${error.message}`);
+                }
+            }
+
+            fileResults.innerHTML = results.join('<br>');
+        }
+
+        // Check external resources
+        async function checkExternalResources() {
+            const externals = [
+                'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap',
+                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+                'https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js'
+            ];
+
+            let results = [];
+
+            for (const url of externals) {
+                try {
+                    const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+                    results.push(`<span class="success">✅ External resource accessible</span>`);
+                } catch (error) {
+                    results.push(`<span class="warning">⚠️ External resource check failed (expected for CORS)</span>`);
+                }
+            }
+
+            externalResults.innerHTML = results.join('<br>');
+        }
+
+        // Generate recommendations
+        function generateRecommendations() {
+            let recs = [];
+
+            if (issues.length === 0 && errors.length === 0) {
+                recs.push('<span class="success">✅ No issues detected! Your website should be working properly.</span>');
+                recs.push('<span class="info">💡 If you're still seeing errors, try:</span>');
+                recs.push('• Hard refresh (Ctrl+F5 or Cmd+Shift+R)');
+                recs.push('• Clear browser cache');
+                recs.push('• Wait a few minutes for GitHub Pages to fully deploy');
+            } else {
+                recs.push('<span class="error">🔧 Issues Found - Here's how to fix them:</span>');
+
+                if (issues.some(i => i.includes('config.js'))) {
+                    recs.push('• <strong>Fix:</strong> Create js/config.js with the configuration code');
+                }
+
+                if (issues.some(i => i.includes('styles.css'))) {
+                    recs.push('• <strong>Fix:</strong> Create css/styles.css with the CSS code');
+                }
+
+                if (issues.length > 3) {
+                    recs.push('• <strong>Fix:</strong> It looks like multiple files are missing. You may need to recreate them.');
+                }
+
+                if (errors.length > 0) {
+                    recs.push('• <strong>Fix:</strong> JavaScript errors detected. Check the console for specific error messages.');
+                }
+            }
+
+            recommendations.innerHTML = recs.join('<br>');
+        }
+
+        // Run diagnostics
+        async function runDiagnostics() {
+            await checkFiles();
+            await checkExternalResources();
+
+            // Wait a moment for any immediate errors
+            setTimeout(() => {
+                updateErrorResults();
+                generateRecommendations();
+            }, 2000);
+        }
+
+        runDiagnostics();
     </script>
 </body>
 </html>
