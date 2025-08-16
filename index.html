@@ -5,41 +5,166 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Learning Progress | Abhijith - Tech Enthusiast</title>
     
-    <!-- Meta tags for SEO -->
-    <meta name="description" content="Abhijith's learning journey - Documenting my progress in C programming and Tech-Mastery. Follow my coding adventure and explore my learning repositories.">
-    <meta name="keywords" content="Abhijith, Tech Enthusiast, Learning Progress, C Programming, GitHub, Programming Journey, Tech-Mastery">
+    <meta name="description" content="Abhijith's learning journey - Documenting my progress in C programming and Tech-Mastery.">
     <meta name="author" content="Abhijith">
     
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="My Learning Progress - Abhijith">
-    <meta property="og:description" content="Documenting my learning journey in programming, focusing on C and documenting my Tech-Mastery progress.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://snorlax-011.github.io">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="My Learning Progress - Abhijith">
-    <meta name="twitter:description" content="Documenting my learning journey in programming and Tech-Mastery progress.">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Particles.js for background animation -->
+    <!-- Particles.js -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <!-- CSS -->
     <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        /* Additional styles for real content */
+        .learning-timeline {
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .timeline-items {
+            margin-top: 1rem;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline-date {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            min-width: 100px;
+            margin-right: 1rem;
+        }
+        
+        .timeline-content {
+            color: var(--text-secondary);
+        }
+        
+        .chapter-progress {
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-overview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .progress-overview .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-overview .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), #00ff88);
+            border-radius: 4px;
+        }
+        
+        .progress-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .progress-section h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+        
+        .progress-section ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .progress-section li {
+            padding: 0.3rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .progress-section li::before {
+            content: "▸ ";
+            color: var(--accent-color);
+            margin-right: 0.5rem;
+        }
+        
+        .repo-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .repo-action-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .repo-action-btn.primary {
+            background: var(--accent-color);
+            color: var(--bg-primary);
+        }
+        
+        .repo-action-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .repo-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .progress-details {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .repo-actions {
+                flex-direction: column;
+            }
+            
+            .repo-action-btn {
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Particles Background -->
@@ -50,19 +175,15 @@
         <div class="loading-content">
             <div class="loading-logo">
                 <i class="fas fa-book-open"></i>
-                <span class="terminal-cursor"></span>
             </div>
             <div class="loading-text">
                 <span class="loading-message">Initializing learning progress...</span>
-                <div class="loading-progress">
-                    <div class="loading-bar"></div>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- Navigation -->
-    <nav class="nav-header" id="nav-header">
+    <nav class="nav-header">
         <div class="nav-container">
             <div class="nav-logo">
                 <div class="logo-text">
@@ -71,17 +192,11 @@
                 </div>
             </div>
             
-            <ul class="nav-menu" id="nav-menu">
+            <ul class="nav-menu">
                 <li><a href="#home" class="nav-link active">Home</a></li>
                 <li><a href="#tech-mastery" class="nav-link">Tech-Mastery</a></li>
                 <li><a href="#learning-status" class="nav-link">Learning Status</a></li>
             </ul>
-            
-            <div class="nav-toggle" id="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
         </div>
     </nav>
 
@@ -90,7 +205,6 @@
         <!-- Hero Section -->
         <section id="home" class="hero-section">
             <div class="container">
-                <!-- Terminal Window -->
                 <div class="terminal-window">
                     <div class="terminal-header">
                         <div class="terminal-controls">
@@ -102,36 +216,33 @@
                     </div>
                     
                     <div class="terminal-content">
-                        <div class="terminal-output">
-                            <div class="intro-section">
-                                <div class="user-info">
-                                    <h1 class="user-name">Abhijith</h1>
-                                    <p class="user-title">Tech Enthusiast</p>
-                                    <p class="user-bio">Documenting my learning journey.</p>
-                                </div>
+                        <div class="intro-section">
+                            <div class="user-info">
+                                <h1 class="user-name">Abhijith</h1>
+                                <p class="user-title">Tech Enthusiast</p>
+                                <p class="user-bio">Documenting my learning journey.</p>
                             </div>
-                            
-                            <div class="terminal-commands">
-                                <div class="terminal-line">
-                                    <span class="prompt">abhijith@learning:~$</span>
-                                    <span class="command" id="cmd-1"></span>
-                                    <span class="cursor">▋</span>
-                                </div>
-                                <div class="terminal-line">
-                                    <span class="prompt">abhijith@learning:~$</span>
-                                    <span class="command" id="cmd-2"></span>
-                                </div>
-                                <div class="terminal-line">
-                                    <span class="prompt">abhijith@learning:~$</span>
-                                    <span class="command" id="cmd-3"></span>
-                                </div>
-                                <div class="terminal-line status-line">
-                                    <span class="status-text" id="github-status"></span>
-                                </div>
-                                <div class="terminal-line">
-                                    <span class="prompt">abhijith@learning:~$</span>
-                                    <span class="command" id="final-cmd"></span>
-                                </div>
+                        </div>
+                        
+                        <div class="terminal-commands">
+                            <div class="terminal-line">
+                                <span class="prompt">abhijith@learning:~$</span>
+                                <span class="command" id="cmd-1"></span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt">abhijith@learning:~$</span>
+                                <span class="command" id="cmd-2"></span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt">abhijith@learning:~$</span>
+                                <span class="command" id="cmd-3"></span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="status-text" id="github-status"></span>
+                            </div>
+                            <div class="terminal-line">
+                                <span class="prompt">abhijith@learning:~$</span>
+                                <span class="command" id="final-cmd"></span>
                             </div>
                         </div>
                         
@@ -147,7 +258,7 @@
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number" id="total-commits">0</div>
-                                <div class="stat-label">Learning Commits</div>
+                                <div class="stat-label">Total Commits</div>
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number" id="c-progress">0</div>
@@ -159,7 +270,7 @@
             </div>
         </section>
 
-        <!-- Tech-Mastery Showcase Section -->
+        <!-- Tech-Mastery Section -->
         <section id="tech-mastery" class="tech-mastery-section">
             <div class="container">
                 <div class="section-header">
@@ -171,65 +282,7 @@
                 
                 <div class="repo-showcase" id="repo-showcase">
                     <!-- Repository showcase will be populated by JavaScript -->
-                    <div class="showcase-loading">
-                        <div class="loading-spinner">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </div>
-                        <p>Loading Tech-Mastery repository data...</p>
-                    </div>
-                </div>
-
-                <!-- Tech-Mastery Details -->
-                <div class="tech-mastery-details">
-                    <div class="details-grid">
-                        <div class="detail-card">
-                            <div class="detail-header">
-                                <i class="fas fa-folder-open"></i>
-                                <h3>Repository Structure</h3>
-                            </div>
-                            <div class="detail-content" id="repo-structure">
-                                <div class="structure-loading">
-                                    <i class="fas fa-spinner fa-spin"></i>
-                                    <span>Analyzing repository structure...</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="detail-card">
-                            <div class="detail-header">
-                                <i class="fas fa-code"></i>
-                                <h3>C Programming Progress</h3>
-                            </div>
-                            <div class="detail-content" id="c-programming-progress">
-                                <div class="progress-item">
-                                    <div class="progress-header">
-                                        <span class="progress-title">Chapter 1: Tutorial Introduction</span>
-                                        <span class="progress-percentage">In Progress</span>
-                                    </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 45%"></div>
-                                    </div>
-                                </div>
-                                <div class="progress-notes">
-                                    <p><strong>Current Focus:</strong> Learning C fundamentals and basic programming concepts</p>
-                                    <p><strong>Latest Update:</strong> Working on exercises and examples from Chapter 1</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="detail-card full-width">
-                            <div class="detail-header">
-                                <i class="fas fa-file-alt"></i>
-                                <h3>Learning Documentation</h3>
-                            </div>
-                            <div class="detail-content" id="learning-documentation">
-                                <div class="documentation-loading">
-                                    <i class="fas fa-spinner fa-spin"></i>
-                                    <span>Fetching learning documentation from GitHub...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- NO MORE ENDLESS LOADING! -->
                 </div>
             </div>
         </section>
@@ -272,7 +325,7 @@
                                         <span class="stat-label">Total Chapters</span>
                                     </div>
                                     <div class="progress-stat">
-                                        <span class="stat-number">15%</span>
+                                        <span class="stat-number">65%</span>
                                         <span class="stat-label">Complete</span>
                                     </div>
                                 </div>
@@ -280,11 +333,11 @@
                                 <div class="chapter-progress">
                                     <h4>Chapter 1: A Tutorial Introduction</h4>
                                     <div class="progress-bar">
-                                        <div class="progress-fill" style="width: 45%"></div>
+                                        <div class="progress-fill" style="width: 65%"></div>
                                     </div>
                                     <div class="progress-details">
-                                        <span>Working on: Getting Started exercises</span>
-                                        <span class="progress-time">Last updated: 2 days ago</span>
+                                        <span>Working on: Character counting and line counting programs</span>
+                                        <span class="progress-time">Last updated: 17 hours ago</span>
                                     </div>
                                 </div>
                             </div>
@@ -295,10 +348,10 @@
                                 <i class="fas fa-external-link-alt"></i>
                                 View Progress
                             </a>
-                            <button class="action-btn secondary" id="refresh-progress">
-                                <i class="fas fa-sync-alt"></i>
-                                Refresh Status
-                            </button>
+                            <a href="https://snorlax-011.github.io/Tech-Mastery/" class="action-btn secondary" target="_blank" rel="noopener noreferrer">
+                                <i class="fas fa-globe"></i>
+                                Visit Site
+                            </a>
                         </div>
                     </div>
 
@@ -316,9 +369,9 @@
                                 </div>
                                 <div class="activity-content">
                                     <div class="activity-description">
-                                        Updated C Programming exercises in Tech-Mastery
+                                        Two's complement, Character count, if statement and line count
                                     </div>
-                                    <div class="activity-time">2 days ago</div>
+                                    <div class="activity-time">17 hours ago</div>
                                 </div>
                             </div>
                             
@@ -328,9 +381,9 @@
                                 </div>
                                 <div class="activity-content">
                                     <div class="activity-description">
-                                        Added notes for Chapter 1 - Variables and Arithmetic
+                                        Input and Output in C
                                     </div>
-                                    <div class="activity-time">3 days ago</div>
+                                    <div class="activity-time">5 days ago</div>
                                 </div>
                             </div>
                             
@@ -340,9 +393,9 @@
                                 </div>
                                 <div class="activity-content">
                                     <div class="activity-description">
-                                        Created new repository structure for learning progress
+                                        Created codes_chapter1.md with all learning programs
                                     </div>
-                                    <div class="activity-time">1 week ago</div>
+                                    <div class="activity-time">3 days ago</div>
                                 </div>
                             </div>
                         </div>
@@ -353,12 +406,9 @@
     </main>
 
     <!-- Back to Top Button -->
-    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <button class="back-to-top" id="back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-    <!-- Error Container -->
-    <div id="error-container" class="error-container hidden"></div>
 
     <!-- Scripts -->
     <script src="js/config.js"></script>
@@ -367,23 +417,5 @@
     <script src="js/components.js"></script>
     <script src="js/github-api.js"></script>
     <script src="js/app.js"></script>
-
-    <!-- Service Worker Registration -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then((registration) => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch((registrationError) => {
-                        console.log('SW registration failed: ', registrationError);
-                    });
-            });
-        }
-    </script>
-
-    <!-- Analytics (Optional) -->
-    <!-- Add your analytics code here if needed -->
 </body>
 </html>
