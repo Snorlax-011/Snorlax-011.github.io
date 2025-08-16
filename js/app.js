@@ -1,31 +1,35 @@
 /**
  * ===================================
- * MAIN APPLICATION SCRIPT
+ * MY LEARNING PROGRESS - MAIN APPLICATION
  * Advanced GitHub Integration System
  * ===================================
  */
 
-class TechMasteryApp {
+class LearningProgressApp {
     constructor() {
         this.config = window.APP_CONFIG;
         this.github = new GitHubAPI();
         this.utils = new Utils();
         this.animations = new Animations();
         this.components = new Components();
-
+        
         // State management
         this.state = {
             isLoaded: false,
-            currentSection: 'home',
             repositories: [],
-            filteredRepos: [],
-            currentFilter: 'all',
-            currentView: 'grid',
-            searchQuery: '',
+            techMasteryRepo: null,
+            cProgrammingRepo: null,
             user: null,
             stats: {},
             rateLimitInfo: {},
-            lastUpdate: null
+            lastUpdate: null,
+            learningProgress: {
+                cProgramming: {
+                    currentChapter: 1,
+                    completed: 0,
+                    total: 10
+                }
+            }
         };
 
         // Performance tracking
@@ -41,29 +45,26 @@ class TechMasteryApp {
 
     async init() {
         try {
-            console.log('🚀 Initializing Tech-Mastery Application...');
-
+            console.log('🚀 Initializing My Learning Progress Application...');
+            
             // Initialize components
             this.initializeEventListeners();
             this.initializeParticles();
             this.initializeIntersectionObserver();
-
+            
             // Load GitHub data
             await this.loadGitHubData();
-
+            
             // Initialize UI components
             this.initializeNavigation();
-            this.initializeSearch();
-            this.initializeFilters();
             this.initializeAnimations();
-
+            
             // Hide loading screen
             this.hideLoadingScreen();
-
+            
             console.log('✅ Application initialized successfully');
             this.performance.loadTime = performance.now() - this.performance.startTime;
             console.log(`⚡ Load time: ${this.performance.loadTime.toFixed(2)}ms`);
-
         } catch (error) {
             console.error('❌ Application initialization failed:', error);
             this.handleError(error);
@@ -71,14 +72,14 @@ class TechMasteryApp {
     }
 
     /**
-     * Load GitHub data with advanced error handling and caching
+     * Load GitHub data focusing on Tech-Mastery repository
      */
     async loadGitHubData() {
         const loadingMessages = [
             'Connecting to GitHub API...',
-            'Fetching repository data...',
-            'Processing Tech-Mastery content...',
-            'Analyzing project statistics...',
+            'Fetching learning repositories...',
+            'Loading Tech-Mastery content...',
+            'Analyzing learning progress...',
             'Preparing showcase...'
         ];
 
@@ -115,12 +116,13 @@ class TechMasteryApp {
             this.state.repositories = await this.github.getUserRepositories();
             this.performance.apiCalls++;
 
-            // Fetch additional data for featured repository (Tech-Mastery)
+            // Focus on Tech-Mastery repository
             updateLoadingMessage();
             const techMasteryRepo = await this.github.getRepository('Snorlax-011', 'Tech-Mastery');
             if (techMasteryRepo) {
-                // Mark as featured
                 techMasteryRepo.featured = true;
+                this.state.techMasteryRepo = techMasteryRepo;
+                
                 // Replace or add to repositories
                 const existingIndex = this.state.repositories.findIndex(repo => repo.name === 'Tech-Mastery');
                 if (existingIndex >= 0) {
@@ -128,6 +130,15 @@ class TechMasteryApp {
                 } else {
                     this.state.repositories.unshift(techMasteryRepo);
                 }
+            }
+
+            // Look for C programming repository
+            const cRepo = this.state.repositories.find(repo => 
+                repo.name.toLowerCase().includes('c') || 
+                (repo.description && repo.description.toLowerCase().includes('c programming'))
+            );
+            if (cRepo) {
+                this.state.cProgrammingRepo = cRepo;
             }
 
             // Calculate statistics
@@ -138,7 +149,6 @@ class TechMasteryApp {
             this.cacheData();
 
             clearInterval(messageInterval);
-
         } catch (error) {
             clearInterval(messageInterval);
             throw error;
@@ -146,28 +156,30 @@ class TechMasteryApp {
     }
 
     /**
-     * Calculate comprehensive statistics
+     * Calculate learning-focused statistics
      */
     calculateStatistics() {
         const repos = this.state.repositories;
-
         this.state.stats = {
             totalRepos: repos.length,
-            totalStars: repos.reduce((sum, repo) => sum + repo.stargazers_count, 0),
-            totalForks: repos.reduce((sum, repo) => sum + repo.forks_count, 0),
-            totalCommits: Math.floor(Math.random() * 1000) + 500, // Placeholder
-            languages: this.getLanguageStatistics(repos),
-            topics: this.getTopicStatistics(repos),
-            recentActivity: this.getRecentActivity(repos)
+            learningRepos: repos.filter(repo => 
+                repo.name.includes('Tech-Mastery') || 
+                repo.name.toLowerCase().includes('learning') ||
+                repo.name.toLowerCase().includes('chapter')
+            ).length,
+            totalCommits: Math.floor(Math.random() * 500) + 200, // Placeholder for learning commits
+            programmingLanguages: this.getProgrammingLanguages(repos),
+            recentActivity: this.getRecentActivity(repos),
+            learningProgress: this.calculateLearningProgress()
         };
 
-        console.log('📊 Statistics calculated:', this.state.stats);
+        console.log('📊 Learning statistics calculated:', this.state.stats);
     }
 
     /**
-     * Get language statistics
+     * Get programming languages being learned
      */
-    getLanguageStatistics(repos) {
+    getProgrammingLanguages(repos) {
         const languages = {};
         repos.forEach(repo => {
             if (repo.language) {
@@ -175,76 +187,54 @@ class TechMasteryApp {
             }
         });
 
-        const total = Object.values(languages).reduce((sum, count) => sum + count, 0);
         return Object.entries(languages)
             .map(([name, count]) => ({
                 name,
                 count,
-                percentage: Math.round((count / total) * 100),
-                color: this.getLanguageColor(name)
+                percentage: Math.round((count / repos.length) * 100),
+                color: this.getLanguageColor(name),
+                isCurrentlyLearning: name === 'C' || name === 'JavaScript' || name === 'Python'
             }))
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 8); // Top 8 languages
+            .sort((a, b) => b.count - a.count);
     }
 
     /**
-     * Get topic statistics
+     * Calculate learning progress
      */
-    getTopicStatistics(repos) {
-        const topics = {};
-        repos.forEach(repo => {
-            if (repo.topics) {
-                repo.topics.forEach(topic => {
-                    topics[topic] = (topics[topic] || 0) + 1;
-                });
+    calculateLearningProgress() {
+        return {
+            cProgramming: {
+                current: 'Chapter 1: A Tutorial Introduction',
+                completed: 15,
+                total: 100,
+                lastUpdate: '2 days ago'
+            },
+            techMastery: {
+                current: 'Documenting C Programming Journey',
+                repositories: this.state.repositories.length,
+                lastCommit: 'Updated learning notes'
             }
-        });
-
-        return Object.entries(topics)
-            .map(([name, count]) => ({ name, count }))
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 10);
+        };
     }
 
     /**
-     * Get recent activity
+     * Get recent learning activity
      */
     getRecentActivity(repos) {
         return repos
             .filter(repo => repo.updated_at)
             .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at))
-            .slice(0, 10)
+            .slice(0, 5)
             .map(repo => ({
                 type: 'update',
                 repo: repo.name,
                 description: `Updated ${repo.name}`,
                 time: repo.updated_at,
-                url: repo.html_url
+                url: repo.html_url,
+                isLearningRepo: repo.name.includes('Tech-Mastery') || 
+                              repo.name.toLowerCase().includes('c') ||
+                              repo.name.toLowerCase().includes('learning')
             }));
-    }
-
-    /**
-     * Get language color
-     */
-    getLanguageColor(language) {
-        const colors = {
-            'JavaScript': '#f1e05a',
-            'Python': '#3572A5',
-            'TypeScript': '#2b7489',
-            'HTML': '#e34c26',
-            'CSS': '#563d7c',
-            'Java': '#b07219',
-            'C++': '#f34b7d',
-            'C': '#555555',
-            'Go': '#00ADD8',
-            'Rust': '#dea584',
-            'PHP': '#4F5D95',
-            'Ruby': '#701516',
-            'Swift': '#ffac45',
-            'Kotlin': '#F18E33',
-            'Dart': '#00B4AB'
-        };
-        return colors[language] || '#8b949e';
     }
 
     /**
@@ -254,17 +244,17 @@ class TechMasteryApp {
         if (typeof particlesJS !== 'undefined') {
             particlesJS('particles-js', {
                 particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    number: { value: 60, density: { enable: true, value_area: 800 } },
                     color: { value: '#ffffff' },
                     shape: { type: 'circle' },
                     opacity: { value: 0.1, random: false },
                     size: { value: 3, random: true },
-                    line_linked: {
-                        enable: true,
-                        distance: 150,
-                        color: '#ffffff',
-                        opacity: 0.1,
-                        width: 1
+                    line_linked: { 
+                        enable: true, 
+                        distance: 150, 
+                        color: '#ffffff', 
+                        opacity: 0.1, 
+                        width: 1 
                     },
                     move: {
                         enable: true,
@@ -282,13 +272,6 @@ class TechMasteryApp {
                         onhover: { enable: true, mode: 'repulse' },
                         onclick: { enable: true, mode: 'push' },
                         resize: true
-                    },
-                    modes: {
-                        grab: { distance: 140, line_linked: { opacity: 1 } },
-                        bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
-                        repulse: { distance: 100, duration: 0.4 },
-                        push: { particles_nb: 4 },
-                        remove: { particles_nb: 2 }
                     }
                 },
                 retina_detect: true
@@ -358,7 +341,7 @@ class TechMasteryApp {
     setupMobileMenu() {
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('.nav-menu');
-
+        
         if (navToggle) {
             navToggle.addEventListener('click', () => {
                 navMenu.classList.toggle('active');
@@ -373,7 +356,6 @@ class TechMasteryApp {
     closeMobileMenu() {
         const navMenu = document.querySelector('.nav-menu');
         const navToggle = document.querySelector('.nav-toggle');
-
         if (navMenu) navMenu.classList.remove('active');
         if (navToggle) navToggle.classList.remove('active');
     }
@@ -383,9 +365,6 @@ class TechMasteryApp {
      */
     handleScroll() {
         const scrollY = window.scrollY;
-
-        // Update navigation
-        this.updateActiveSection();
 
         // Show/hide back to top button
         const backToTop = document.getElementById('back-to-top');
@@ -407,57 +386,6 @@ class TechMasteryApp {
             }
             this.lastScrollY = scrollY;
         }
-    }
-
-    /**
-     * Update active section in navigation
-     */
-    updateActiveSection() {
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.clientHeight;
-            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-                current = section.getAttribute('id');
-            }
-        });
-
-        if (current !== this.state.currentSection) {
-            this.state.currentSection = current;
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-    }
-
-    /**
-     * Scroll to section
-     */
-    scrollToSection(sectionId) {
-        const section = document.getElementById(sectionId);
-        if (section) {
-            const offsetTop = section.offsetTop - 80; // Account for fixed nav
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    }
-
-    /**
-     * Set active navigation link
-     */
-    setActiveNavLink(activeLink) {
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.classList.remove('active');
-        });
-        activeLink.classList.add('active');
     }
 
     /**
@@ -487,7 +415,7 @@ class TechMasteryApp {
         }, options);
 
         // Observe elements
-        const elementsToObserve = document.querySelectorAll('.stats-panel, .repo-showcase, .skill-category, .analytics-card');
+        const elementsToObserve = document.querySelectorAll('.stats-panel, .repo-showcase, .learning-card');
         elementsToObserve.forEach(el => this.observer.observe(el));
     }
 
@@ -498,103 +426,21 @@ class TechMasteryApp {
         if (element.classList.contains('stats-panel')) {
             this.animateCounters();
         }
-
         if (element.classList.contains('repo-showcase')) {
-            this.displayRepositoryShowcase();
+            this.displayTechMasteryShowcase();
         }
     }
 
     /**
-     * Initialize search functionality
-     */
-    initializeSearch() {
-        const searchInput = document.getElementById('project-search');
-        if (searchInput) {
-            searchInput.addEventListener('input', this.utils.debounce((e) => {
-                this.state.searchQuery = e.target.value.toLowerCase();
-                this.filterProjects();
-            }, 300));
-        }
-    }
-
-    /**
-     * Initialize filter functionality
-     */
-    initializeFilters() {
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.state.currentFilter = btn.dataset.filter;
-                this.filterProjects();
-            });
-        });
-
-        const viewButtons = document.querySelectorAll('.view-btn');
-        viewButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                viewButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                this.state.currentView = btn.dataset.view;
-                this.updateProjectsView();
-            });
-        });
-    }
-
-    /**
-     * Filter projects based on search and filters
-     */
-    filterProjects() {
-        let filtered = [...this.state.repositories];
-
-        // Apply search filter
-        if (this.state.searchQuery) {
-            filtered = filtered.filter(repo =>
-                repo.name.toLowerCase().includes(this.state.searchQuery) ||
-                (repo.description && repo.description.toLowerCase().includes(this.state.searchQuery)) ||
-                (repo.language && repo.language.toLowerCase().includes(this.state.searchQuery)) ||
-                (repo.topics && repo.topics.some(topic => topic.toLowerCase().includes(this.state.searchQuery)))
-            );
-        }
-
-        // Apply category filter
-        switch (this.state.currentFilter) {
-            case 'featured':
-                filtered = filtered.filter(repo => repo.featured || repo.stargazers_count > 0);
-                break;
-            case 'recent':
-                filtered = filtered.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)).slice(0, 12);
-                break;
-            default:
-                // 'all' - no additional filtering
-                break;
-        }
-
-        this.state.filteredRepos = filtered;
-        this.renderProjects();
-    }
-
-    /**
-     * Update projects view (grid/list)
-     */
-    updateProjectsView() {
-        const projectsGrid = document.getElementById('projects-grid');
-        if (projectsGrid) {
-            projectsGrid.className = `projects-grid ${this.state.currentView}-view`;
-        }
-    }
-
-    /**
-     * Initialize typing animations
+     * Initialize typing animations for learning journey
      */
     initializeAnimations() {
         const commands = [
-            { id: 'cmd-1', text: "echo 'Welcome to my Tech-Mastery journey! 😉'", speed: 50 },
-            { id: 'cmd-2', text: "git clone https://github.com/Snorlax-011/Tech-Mastery.git", speed: 40 },
-            { id: 'cmd-3', text: "npm run showcase --advanced --impressive", speed: 60 },
-            { id: 'github-status', text: "✅ GitHub API connected | Repositories loaded | Ready to explore!", speed: 45 },
-            { id: 'final-cmd', text: "echo 'Let\'s build something amazing together! 🚀'", speed: 55 }
+            { id: 'cmd-1', text: `echo '${this.config.terminalGreeting}'`, speed: 50 },
+            { id: 'cmd-2', text: "cd ~/learning/Tech-Mastery", speed: 40 },
+            { id: 'cmd-3', text: "ls -la C-Programming/", speed: 60 },
+            { id: 'github-status', text: "✅ GitHub connected | Learning repos loaded | Progress tracked!", speed: 45 },
+            { id: 'final-cmd', text: "echo 'Continuing my learning journey... 📚'", speed: 55 }
         ];
 
         this.animations.typeCommands(commands).then(() => {
@@ -610,208 +456,153 @@ class TechMasteryApp {
     }
 
     /**
-     * Display repository showcase
+     * Display Tech-Mastery repository showcase
      */
-    displayRepositoryShowcase() {
-        const repoStats = document.getElementById('repo-stats');
-        const repoActions = document.getElementById('repo-actions');
-
-        if (repoStats && this.state.stats) {
-            repoStats.innerHTML = `
-                <div class="repo-stat">
-                    <span class="repo-stat-value">${this.state.stats.totalRepos}</span>
-                    <span class="repo-stat-label">Repositories</span>
-                </div>
-                <div class="repo-stat">
-                    <span class="repo-stat-value">${this.state.stats.totalStars}</span>
-                    <span class="repo-stat-label">Total Stars</span>
-                </div>
-                <div class="repo-stat">
-                    <span class="repo-stat-value">${this.state.stats.languages.length}</span>
-                    <span class="repo-stat-label">Languages</span>
-                </div>
-                <div class="repo-stat">
-                    <span class="repo-stat-value">${this.utils.formatDate(new Date())}</span>
-                    <span class="repo-stat-label">Last Updated</span>
-                </div>
-            `;
-        }
-
-        if (repoActions) {
-            repoActions.innerHTML = `
-                <a href="https://github.com/Snorlax-011/Tech-Mastery" target="_blank" class="repo-action-btn">
-                    <i class="fab fa-github"></i>
-                    View Repository
-                </a>
-                <button onclick="app.scrollToSection('projects')" class="repo-action-btn secondary">
-                    <i class="fas fa-folder-open"></i>
-                    Explore Projects
-                </button>
-                <a href="https://snorlax-011.github.io/Tech-Mastery/" target="_blank" class="repo-action-btn secondary">
-                    <i class="fas fa-external-link-alt"></i>
-                    Live Demo
-                </a>
-            `;
+    displayTechMasteryShowcase() {
+        const repoShowcase = document.getElementById('repo-showcase');
+        if (repoShowcase && this.state.techMasteryRepo) {
+            repoShowcase.innerHTML = this.components.createRepoShowcase(this.state.techMasteryRepo);
         }
     }
 
     /**
-     * Animate counter elements
+     * Animate counters
      */
     animateCounters() {
         const counters = [
-            { id: 'total-repos', target: this.state.stats.totalRepos || 0 },
-            { id: 'total-stars', target: this.state.stats.totalStars || 0 },
-            { id: 'total-commits', target: this.state.stats.totalCommits || 0 },
-            { id: 'languages-count', target: this.state.stats.languages.length || 0 }
+            { id: 'total-repos', value: this.state.stats.totalRepos || 0 },
+            { id: 'learning-repos', value: this.state.stats.learningRepos || 0 },
+            { id: 'total-commits', value: this.state.stats.totalCommits || 0 },
+            { id: 'c-progress', value: this.state.stats.learningProgress?.cProgramming?.completed || 0 }
         ];
 
         counters.forEach(counter => {
             const element = document.getElementById(counter.id);
             if (element) {
-                this.animations.animateCounter(element, 0, counter.target, 2000);
+                this.animations.animateCounter(element, 0, counter.value, 1500);
             }
         });
     }
 
     /**
-     * Render projects
+     * Scroll to section
      */
-    renderProjects() {
-        const projectsGrid = document.getElementById('projects-grid');
-        if (!projectsGrid) return;
-
-        const repos = this.state.filteredRepos.slice(0, 12); // Show first 12
-
-        if (repos.length === 0) {
-            projectsGrid.innerHTML = `
-                <div class="no-results">
-                    <i class="fas fa-search"></i>
-                    <h3>No projects found</h3>
-                    <p>Try adjusting your search or filter criteria.</p>
-                </div>
-            `;
-            return;
+    scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            const offsetTop = section.offsetTop - 80;
+            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         }
-
-        projectsGrid.innerHTML = repos.map(repo => this.components.createProjectCard(repo)).join('');
     }
 
     /**
-     * Hide loading screen
+     * Set active navigation link
      */
-    hideLoadingScreen() {
-        const loadingScreen = document.getElementById('loading-screen');
-        if (loadingScreen) {
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-                this.state.isLoaded = true;
-
-                // Initialize post-load animations
-                setTimeout(() => {
-                    this.initializeAnimations();
-                }, 300);
-            }, 1000);
-        }
+    setActiveNavLink(activeLink) {
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        activeLink.classList.add('active');
     }
 
     /**
      * Update responsive components
      */
     updateResponsiveComponents() {
-        // Update any components that need to recalculate on resize
-        if (window.innerWidth <= 768) {
-            this.closeMobileMenu();
+        // Update any responsive elements
+        const elements = document.querySelectorAll('.responsive-element');
+        elements.forEach(el => {
+            // Add responsive updates here
+        });
+    }
+
+    /**
+     * Hide loading screen
+     */
+    hideLoadingScreen() {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+            this.state.isLoaded = true;
         }
     }
 
     /**
-     * Cache data to localStorage
-     */
-    cacheData() {
-        try {
-            const cacheData = {
-                user: this.state.user,
-                repositories: this.state.repositories,
-                stats: this.state.stats,
-                timestamp: Date.now()
-            };
-            localStorage.setItem('github-cache', JSON.stringify(cacheData));
-            console.log('💾 Data cached successfully');
-        } catch (error) {
-            console.warn('Failed to cache data:', error);
-        }
-    }
-
-    /**
-     * Get cached data from localStorage
-     */
-    getCachedData() {
-        try {
-            const cached = localStorage.getItem('github-cache');
-            return cached ? JSON.parse(cached) : null;
-        } catch (error) {
-            console.warn('Failed to retrieve cached data:', error);
-            return null;
-        }
-    }
-
-    /**
-     * Check if cache is valid (1 hour)
-     */
-    isCacheValid(timestamp) {
-        const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
-        return Date.now() - timestamp < CACHE_DURATION;
-    }
-
-    /**
-     * Handle errors gracefully
+     * Handle errors
      */
     handleError(error) {
         console.error('Application error:', error);
         this.performance.errors.push({
             message: error.message,
-            timestamp: Date.now(),
-            stack: error.stack
+            timestamp: Date.now()
         });
-
+        
         // Show user-friendly error message
-        const errorHtml = `
-            <div class="error-container">
-                <div class="error-content">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <h2>Oops! Something went wrong</h2>
-                    <p>Don't worry, this usually fixes itself. Try refreshing the page.</p>
-                    <button onclick="location.reload()" class="btn-primary">
-                        <i class="fas fa-refresh"></i>
-                        Refresh Page
-                    </button>
+        const errorContainer = document.getElementById('error-container');
+        if (errorContainer) {
+            errorContainer.innerHTML = `
+                <div class="error-message">
+                    <h3>Something went wrong</h3>
+                    <p>Unable to load learning progress. Please check your connection and try again.</p>
+                    <button onclick="location.reload()" class="retry-btn">Retry</button>
                 </div>
-            </div>
-        `;
+            `;
+        }
+    }
 
-        document.body.innerHTML = errorHtml;
+    /**
+     * Cache data
+     */
+    cacheData() {
+        const data = {
+            user: this.state.user,
+            repositories: this.state.repositories,
+            stats: this.state.stats,
+            timestamp: Date.now()
+        };
+        localStorage.setItem('learningProgressCache', JSON.stringify(data));
+    }
+
+    /**
+     * Get cached data
+     */
+    getCachedData() {
+        try {
+            const cached = localStorage.getItem('learningProgressCache');
+            return cached ? JSON.parse(cached) : null;
+        } catch (error) {
+            console.warn('Failed to get cached data:', error);
+            return null;
+        }
+    }
+
+    /**
+     * Check if cache is valid
+     */
+    isCacheValid(timestamp) {
+        const cacheTimeout = 5 * 60 * 1000; // 5 minutes
+        return Date.now() - timestamp < cacheTimeout;
+    }
+
+    /**
+     * Get language color
+     */
+    getLanguageColor(language) {
+        const colors = {
+            'C': '#555555',
+            'JavaScript': '#f1e05a',
+            'Python': '#3572A5',
+            'HTML': '#e34c26',
+            'CSS': '#563d7c',
+            'TypeScript': '#2b7489',
+            'Java': '#b07219',
+            'C++': '#f34b7d'
+        };
+        return colors[language] || '#8b949e';
     }
 }
 
-// Initialize the application when DOM is loaded
+// Initialize the application when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.app = new TechMasteryApp();
-});
-
-// Global error handler
-window.addEventListener('error', (event) => {
-    console.error('Global error:', event.error);
-    if (window.app) {
-        window.app.handleError(event.error);
-    }
-});
-
-// Handle unhandled promise rejections
-window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled promise rejection:', event.reason);
-    event.preventDefault();
-    if (window.app) {
-        window.app.handleError(event.reason);
-    }
+    window.learningApp = new LearningProgressApp();
 });
