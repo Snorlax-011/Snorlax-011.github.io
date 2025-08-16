@@ -1,16 +1,15 @@
 /**
- * Component Factory for My Learning Progress (BUG-FIXED)
+ * Component Factory for My Learning Progress (REAL CONTENT VERSION)
  */
 
 class Components {
     createProjectCard(repo) {
-        // Add null check for repo parameter - FIXED
         if (!repo) {
             return '<div class="project-card">Repository data not available</div>';
         }
 
         const topicsHTML = (repo.topics || []).slice(0, 5).map(topic => 
-            `<span class="topic-tag">${this.escapeHtml(topic)}</span>` // FIXED: Escape HTML
+            `<span class="topic-tag">${this.escapeHtml(topic)}</span>`
         ).join('');
         
         const languageDot = repo.language ? 
@@ -69,6 +68,138 @@ class Components {
         `;
     }
 
+    createRepoShowcase(repo) {
+        // FIXED: Always show content, no more endless loading
+        const repoData = repo || this.getTechMasteryFallbackData();
+
+        return `
+            <div class="repo-showcase-content">
+                <div class="repo-header">
+                    <h2 class="repo-title">
+                        <i class="fas fa-book"></i>
+                        ${this.escapeHtml(repoData.name)}
+                    </h2>
+                    <p class="repo-description">${this.escapeHtml(repoData.description)}</p>
+                </div>
+                
+                <div class="repo-stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">19</span>
+                            <span class="stat-label">Real Commits</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-file-code"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">11</span>
+                            <span class="stat-label">C Programs</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">14</span>
+                            <span class="stat-label">Concept Notes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="learning-timeline">
+                    <h3><i class="fas fa-calendar-alt"></i> Learning Timeline</h3>
+                    <div class="timeline-items">
+                        <div class="timeline-item">
+                            <div class="timeline-date">Day 1 (Aug 1)</div>
+                            <div class="timeline-content">Created Tech-Mastery repository, first C program</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Day 2 (Aug 2)</div>
+                            <div class="timeline-content">While loops, formatting, temperature conversion</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Day 3 (Aug 7)</div>
+                            <div class="timeline-content">For loops, character I/O, literals, EOF</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Day 4 (Aug 8)</div>
+                            <div class="timeline-content">Input/output final, buffering concepts</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-date">Day 5 (Aug 15)</div>
+                            <div class="timeline-content">Two's complement, char counting, line counting</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chapter-progress">
+                    <h3><i class="fas fa-graduation-cap"></i> Chapter 1 Progress</h3>
+                    <div class="progress-overview">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%"></div>
+                        </div>
+                        <span class="progress-text">65% Complete</span>
+                    </div>
+                    <div class="progress-details">
+                        <div class="progress-section">
+                            <h4>✅ Completed Concepts:</h4>
+                            <ul>
+                                <li>Formatting & Format Specifiers</li>
+                                <li>While & For Loops</li>
+                                <li>Character I/O Operations</li>
+                                <li>EOF Handling</li>
+                                <li>Two's Complement</li>
+                                <li>Character & Line Counting</li>
+                            </ul>
+                        </div>
+                        <div class="progress-section">
+                            <h4>📝 Programs Written:</h4>
+                            <ul>
+                                <li>Temperature Conversion (Fahrenheit ↔ Celsius)</li>
+                                <li>Character Input/Output Programs</li>
+                                <li>EOF Detection</li>
+                                <li>Character Counting</li>
+                                <li>Line Counting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="repo-actions">
+                    <a href="${this.escapeHtml(repoData.html_url)}" class="repo-action-btn primary" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-external-link-alt"></i>
+                        View Repository
+                    </a>
+                    <a href="https://snorlax-011.github.io/Tech-Mastery/" class="repo-action-btn secondary" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-globe"></i>
+                        Visit Tech-Mastery Site
+                    </a>
+                    <a href="${this.escapeHtml(repoData.html_url)}/tree/main/C/The_C_Programming_Language/Chapter-1" class="repo-action-btn secondary" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-folder-open"></i>
+                        View Chapter 1
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    getTechMasteryFallbackData() {
+        return {
+            name: 'Tech-Mastery',
+            description: 'To become the King of Computer Technology👑...',
+            html_url: 'https://github.com/Snorlax-011/Tech-Mastery',
+            stargazers_count: 0,
+            forks_count: 0,
+            language: 'C'
+        };
+    }
+
     createLearningProgressCard(title, description, progress, items) {
         const progressBar = `
             <div class="progress-container">
@@ -123,67 +254,8 @@ class Components {
         `;
     }
 
-    createRepoShowcase(repo) {
-        // FIXED: Add proper null check and error handling
-        if (!repo) {
-            return `
-                <div class="repo-showcase-fallback">
-                    <div class="repo-header">
-                        <h2 class="repo-title">
-                            <i class="fas fa-book"></i>
-                            Tech-Mastery
-                        </h2>
-                        <p class="repo-description">My learning journey documentation</p>
-                    </div>
-                    <div class="repo-actions">
-                        <a href="https://github.com/Snorlax-011/Tech-Mastery" class="repo-action-btn primary" target="_blank" rel="noopener noreferrer">
-                            <i class="fas fa-external-link-alt"></i>
-                            View Repository
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
-
-        // FIXED: Safe property access with fallbacks
-        const stats = [
-            { value: repo.stargazers_count || 0, label: 'Stars', icon: 'fas fa-star' },
-            { value: repo.forks_count || 0, label: 'Forks', icon: 'fas fa-code-branch' },
-            { value: this.formatSize(repo.size || 0), label: 'Size', icon: 'fas fa-hdd' }
-        ];
-
-        const statsHTML = stats.map(stat => this.createStatItem(stat.value, stat.label, stat.icon)).join('');
-
-        return `
-            <div class="repo-showcase-content">
-                <div class="repo-header">
-                    <h2 class="repo-title">
-                        <i class="fas fa-book"></i>
-                        ${this.escapeHtml(repo.name || 'Tech-Mastery')}
-                    </h2>
-                    <p class="repo-description">${this.escapeHtml(repo.description || 'My learning journey documentation')}</p>
-                </div>
-                
-                <div class="repo-stats-grid">
-                    ${statsHTML}
-                </div>
-                
-                <div class="repo-actions">
-                    <a href="${this.escapeHtml(repo.html_url || 'https://github.com/Snorlax-011/Tech-Mastery')}" class="repo-action-btn primary" target="_blank" rel="noopener noreferrer">
-                        <i class="fas fa-external-link-alt"></i>
-                        View Repository
-                    </a>
-                    <a href="${this.escapeHtml((repo.html_url || 'https://github.com/Snorlax-011/Tech-Mastery') + '/blob/main/README.md')}" class="repo-action-btn secondary" target="_blank" rel="noopener noreferrer">
-                        <i class="fas fa-readme"></i>
-                        Read Documentation
-                    </a>
-                </div>
-            </div>
-        `;
-    }
-
     formatUpdatedTime(dateString) {
-        if (!dateString) return 'Unknown';
+        if (!dateString) return 'Recently';
         
         try {
             const date = new Date(dateString);
@@ -228,7 +300,6 @@ class Components {
         return colors[language] || '#8b949e';
     }
 
-    // FIXED: Add HTML escaping utility function
     escapeHtml(text) {
         if (typeof text !== 'string') {
             return String(text || '');
