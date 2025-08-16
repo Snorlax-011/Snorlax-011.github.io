@@ -1,8 +1,7 @@
 /**
  * ===================================
  * ADVANCED GITHUB API INTEGRATION
- * Comprehensive GitHub data fetching with rate limiting,
- * caching, and error handling
+ * Comprehensive GitHub data fetching for Learning Progress
  * ===================================
  */
 
@@ -30,7 +29,7 @@ class GitHubAPI {
         this.retryAttempts = 3;
         this.retryDelay = 1000; // 1 second
 
-        console.log('🔗 GitHub API client initialized');
+        console.log('🔗 GitHub API client initialized for learning progress tracking');
     }
 
     /**
@@ -58,7 +57,7 @@ class GitHubAPI {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/vnd.github.v3+json',
-                    'User-Agent': 'TechMastery-Portfolio/1.0',
+                    'User-Agent': 'LearningProgress-Portfolio/1.0',
                     ...options.headers
                 },
                 ...options
@@ -81,7 +80,6 @@ class GitHubAPI {
 
             console.log(`✅ Request successful: ${endpoint}`);
             return data;
-
         } catch (error) {
             console.error(`❌ Request failed: ${endpoint}`, error);
             this.errors.push({
@@ -141,7 +139,6 @@ class GitHubAPI {
         // Process queued requests
         while (this.requestQueue.length > 0 && this.rateLimitInfo.remaining > 0) {
             const { endpoint, options, resolve, reject } = this.requestQueue.shift();
-
             try {
                 const result = await this.makeRequest(endpoint, options);
                 resolve(result);
@@ -165,15 +162,16 @@ class GitHubAPI {
         if (headers.has('x-ratelimit-limit')) {
             this.rateLimitInfo.limit = parseInt(headers.get('x-ratelimit-limit'));
         }
+
         if (headers.has('x-ratelimit-remaining')) {
             this.rateLimitInfo.remaining = parseInt(headers.get('x-ratelimit-remaining'));
         }
+
         if (headers.has('x-ratelimit-reset')) {
             this.rateLimitInfo.reset = parseInt(headers.get('x-ratelimit-reset')) * 1000;
         }
 
         this.rateLimitInfo.used = this.rateLimitInfo.limit - this.rateLimitInfo.remaining;
-
         console.log(`📊 Rate limit: ${this.rateLimitInfo.remaining}/${this.rateLimitInfo.limit}`);
     }
 
@@ -187,12 +185,11 @@ class GitHubAPI {
             return user;
         } catch (error) {
             console.error('Failed to fetch user data:', error);
-            // Return fallback data
+            // Return fallback data for learning progress
             return {
                 login: username,
-                name: 'Abhijith Snorlax',
-                bio: 'Full Stack Developer & Tech Enthusiast',
-                location: 'Ananthapur, Andhra Pradesh, India',
+                name: 'Abhijith',
+                bio: 'Documenting my journey of learning.',
                 public_repos: 0,
                 followers: 0,
                 following: 0,
@@ -218,12 +215,26 @@ class GitHubAPI {
                 `/users/${username}/repos?sort=${sort}&direction=${direction}&per_page=${per_page}&type=${type}`
             );
 
-            // Enhance repository data
+            // Enhance repository data with learning focus
             const enhancedRepos = await this.enhanceRepositories(repos);
 
-            console.log(`📚 Fetched ${enhancedRepos.length} repositories for ${username}`);
-            return enhancedRepos;
+            // Prioritize learning repositories
+            const learningRepos = enhancedRepos.filter(repo => 
+                repo.name.includes('Tech-Mastery') || 
+                repo.name.toLowerCase().includes('c') ||
+                repo.name.toLowerCase().includes('learning') ||
+                repo.name.toLowerCase().includes('chapter')
+            );
 
+            const otherRepos = enhancedRepos.filter(repo => 
+                !learningRepos.includes(repo)
+            );
+
+            // Combine with learning repos first
+            const sortedRepos = [...learningRepos, ...otherRepos];
+
+            console.log(`📚 Fetched ${sortedRepos.length} repositories for ${username} (${learningRepos.length} learning repos)`);
+            return sortedRepos;
         } catch (error) {
             console.error('Failed to fetch repositories:', error);
             return this.getFallbackRepositories();
@@ -231,26 +242,35 @@ class GitHubAPI {
     }
 
     /**
-     * Get specific repository
+     * Get specific repository with detailed information
      */
     async getRepository(owner, repo) {
         try {
             const repository = await this.makeRequest(`/repos/${owner}/${repo}`);
 
-            // Get additional data
-            const [languages, topics, contributors] = await Promise.allSettled([
+            // Get additional data for learning repositories
+            const [languages, topics, contributors, contents] = await Promise.allSettled([
                 this.getRepositoryLanguages(owner, repo),
                 this.getRepositoryTopics(owner, repo),
-                this.getRepositoryContributors(owner, repo)
+                this.getRepositoryContributors(owner, repo),
+                repo === 'Tech-Mastery' ? this.getRepositoryContents(owner, repo) : Promise.resolve([])
             ]);
 
-            return {
+            const enhancedRepo = {
                 ...repository,
                 languages: languages.status === 'fulfilled' ? languages.value : {},
                 topics: topics.status === 'fulfilled' ? topics.value : [],
-                contributors: contributors.status === 'fulfilled' ? contributors.value : []
+                contributors: contributors.status === 'fulfilled' ? contributors.value : [],
+                contents: contents.status === 'fulfilled' ? contents.value : [],
+                isLearningRepo: this.isLearningRepository(repository)
             };
 
+            // If it's Tech-Mastery, get additional learning metadata
+            if (repo === 'Tech-Mastery') {
+                enhancedRepo.learningMetadata = await this.getLearningMetadata(owner, repo);
+            }
+
+            return enhancedRepo;
         } catch (error) {
             console.error(`Failed to fetch repository ${owner}/${repo}:`, error);
             return null;
@@ -311,62 +331,104 @@ class GitHubAPI {
     }
 
     /**
-     * Get user's commit activity
+     * Get learning metadata for repositories
      */
-    async getUserCommitActivity(username = this.username) {
+    async getLearningMetadata(owner, repo) {
         try {
-            const events = await this.makeRequest(`/users/${username}/events/public?per_page=100`);
-            const pushEvents = events.filter(event => event.type === 'PushEvent');
-
-            const commitActivity = pushEvents.map(event => ({
-                repo: event.repo.name,
-                commits: event.payload.commits.length,
-                date: event.created_at,
-                message: event.payload.commits[0]?.message || 'No message'
-            }));
-
-            return commitActivity;
+            // Try to get README content for learning progress
+            const readme = await this.makeRequest(`/repos/${owner}/${repo}/readme`);
+            
+            return {
+                hasReadme: !!readme,
+                readmeContent: readme ? atob(readme.content) : null,
+                learningStructure: await this.analyzeLearningStructure(owner, repo)
+            };
         } catch (error) {
-            console.warn('Failed to fetch commit activity:', error);
+            console.warn(`Failed to fetch learning metadata for ${owner}/${repo}:`, error);
+            return {
+                hasReadme: false,
+                readmeContent: null,
+                learningStructure: []
+            };
+        }
+    }
+
+    /**
+     * Analyze learning structure in repository
+     */
+    async analyzeLearningStructure(owner, repo) {
+        try {
+            const contents = await this.getRepositoryContents(owner, repo);
+            
+            return contents
+                .filter(item => item.type === 'dir')
+                .map(dir => ({
+                    name: dir.name,
+                    path: dir.path,
+                    type: 'directory',
+                    isChapter: dir.name.toLowerCase().includes('chapter'),
+                    isLearningContent: this.isLearningContent(dir.name)
+                }))
+                .sort((a, b) => {
+                    // Sort chapters numerically
+                    if (a.isChapter && b.isChapter) {
+                        const aNum = parseInt(a.name.match(/\d+/)?.[0] || '0');
+                        const bNum = parseInt(b.name.match(/\d+/)?.[0] || '0');
+                        return aNum - bNum;
+                    }
+                    return a.name.localeCompare(b.name);
+                });
+        } catch (error) {
+            console.warn(`Failed to analyze learning structure for ${owner}/${repo}:`, error);
             return [];
         }
     }
 
     /**
-     * Get repository statistics
+     * Check if repository is learning-related
      */
-    async getRepositoryStats(owner, repo) {
-        try {
-            const [stats, commits] = await Promise.allSettled([
-                this.makeRequest(`/repos/${owner}/${repo}/stats/contributors`),
-                this.makeRequest(`/repos/${owner}/${repo}/commits?per_page=1`)
-            ]);
-
-            return {
-                contributors: stats.status === 'fulfilled' ? stats.value : [],
-                lastCommit: commits.status === 'fulfilled' ? commits.value[0] : null
-            };
-        } catch (error) {
-            console.warn(`Failed to fetch stats for ${owner}/${repo}:`, error);
-            return { contributors: [], lastCommit: null };
-        }
+    isLearningRepository(repo) {
+        const learningKeywords = [
+            'tech-mastery', 'learning', 'tutorial', 'chapter', 'course',
+            'study', 'practice', 'exercise', 'c-programming', 'programming-language'
+        ];
+        
+        const repoName = repo.name.toLowerCase();
+        const repoDesc = (repo.description || '').toLowerCase();
+        
+        return learningKeywords.some(keyword => 
+            repoName.includes(keyword) || repoDesc.includes(keyword)
+        );
     }
 
     /**
-     * Enhance repositories with additional data
+     * Check if content is learning-related
+     */
+    isLearningContent(name) {
+        const learningPatterns = [
+            /chapter/i, /lesson/i, /exercise/i, /practice/i,
+            /tutorial/i, /example/i, /assignment/i, /homework/i
+        ];
+        
+        return learningPatterns.some(pattern => pattern.test(name));
+    }
+
+    /**
+     * Enhance repositories with additional learning metadata
      */
     async enhanceRepositories(repos) {
         const enhanced = [];
-
+        
         for (const repo of repos) {
             try {
-                // Add language colors and additional metadata
                 const enhancedRepo = {
                     ...repo,
                     language_color: this.getLanguageColor(repo.language),
                     size_formatted: this.formatSize(repo.size),
                     updated_formatted: this.formatDate(repo.updated_at),
-                    is_featured: this.isFeaturedRepository(repo),
+                    is_learning_repo: this.isLearningRepository(repo),
+                    is_featured: repo.name === 'Tech-Mastery',
+                    learning_priority: this.calculateLearningPriority(repo),
                     health_score: this.calculateHealthScore(repo)
                 };
 
@@ -377,21 +439,30 @@ class GitHubAPI {
             }
         }
 
-        return enhanced;
+        return enhanced.sort((a, b) => b.learning_priority - a.learning_priority);
     }
 
     /**
-     * Check if repository is featured
+     * Calculate learning priority for repositories
      */
-    isFeaturedRepository(repo) {
-        const featuredCriteria = [
-            repo.name.toLowerCase() === 'tech-mastery',
-            repo.stargazers_count > 0,
-            repo.description && repo.description.length > 50,
-            repo.topics && repo.topics.length > 2
-        ];
-
-        return featuredCriteria.filter(Boolean).length >= 2;
+    calculateLearningPriority(repo) {
+        let priority = 0;
+        
+        // Tech-Mastery gets highest priority
+        if (repo.name === 'Tech-Mastery') priority += 100;
+        
+        // Learning-related repos get high priority
+        if (this.isLearningRepository(repo)) priority += 50;
+        
+        // Recently updated repos get bonus
+        const daysSinceUpdate = (Date.now() - new Date(repo.updated_at)) / (1000 * 60 * 60 * 24);
+        if (daysSinceUpdate < 7) priority += 20;
+        if (daysSinceUpdate < 30) priority += 10;
+        
+        // Repos with description get bonus
+        if (repo.description) priority += 5;
+        
+        return priority;
     }
 
     /**
@@ -403,23 +474,46 @@ class GitHubAPI {
         // Has description
         if (repo.description) score += 20;
 
-        // Has topics
-        if (repo.topics && repo.topics.length > 0) score += 15;
-
-        // Has README (inferred from size > 0)
-        if (repo.size > 0) score += 15;
-
-        // Recently updated (within 6 months)
+        // Recently updated
         const sixMonthsAgo = Date.now() - (6 * 30 * 24 * 60 * 60 * 1000);
         if (new Date(repo.updated_at) > sixMonthsAgo) score += 20;
 
-        // Has stars
+        // Has content (inferred from size > 0)
+        if (repo.size > 0) score += 15;
+
+        // Has stars (engagement)
         if (repo.stargazers_count > 0) score += 15;
 
         // Has license
         if (repo.license) score += 15;
 
+        // Learning repository bonus
+        if (this.isLearningRepository(repo)) score += 15;
+
         return Math.min(score, 100);
+    }
+
+    /**
+     * Get fallback repositories for learning focus
+     */
+    getFallbackRepositories() {
+        return [
+            {
+                name: 'Tech-Mastery',
+                description: 'A comprehensive collection of technical learning resources and my programming journey',
+                html_url: 'https://github.com/Snorlax-011/Tech-Mastery',
+                language: 'Multiple',
+                stargazers_count: 0,
+                forks_count: 0,
+                updated_at: new Date().toISOString(),
+                topics: ['learning', 'programming', 'c-language', 'documentation'],
+                featured: true,
+                is_learning_repo: true,
+                language_color: '#2f81f7',
+                health_score: 95,
+                learning_priority: 100
+            }
+        ];
     }
 
     /**
@@ -427,28 +521,18 @@ class GitHubAPI {
      */
     getLanguageColor(language) {
         const colors = {
+            'C': '#555555',
             'JavaScript': '#f1e05a',
             'TypeScript': '#2b7489',
             'Python': '#3572A5',
-            'Java': '#b07219',
-            'C++': '#f34b7d',
-            'C': '#555555',
-            'C#': '#239120',
-            'PHP': '#4F5D95',
-            'Ruby': '#701516',
-            'Go': '#00ADD8',
-            'Rust': '#dea584',
-            'Swift': '#ffac45',
-            'Kotlin': '#F18E33',
-            'Dart': '#00B4AB',
             'HTML': '#e34c26',
             'CSS': '#563d7c',
-            'SCSS': '#c6538c',
-            'Shell': '#89e051',
-            'PowerShell': '#012456',
-            'Dockerfile': '#384d54'
+            'Java': '#b07219',
+            'C++': '#f34b7d',
+            'Go': '#00ADD8',
+            'Rust': '#dea584',
+            'Multiple': '#2f81f7'
         };
-
         return colors[language] || '#8b949e';
     }
 
@@ -476,27 +560,6 @@ class GitHubAPI {
         if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
         if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`;
         return `${Math.floor(diffInDays / 365)} years ago`;
-    }
-
-    /**
-     * Get fallback repositories if API fails
-     */
-    getFallbackRepositories() {
-        return [
-            {
-                name: 'Tech-Mastery',
-                description: 'A comprehensive collection of technical learning resources and projects',
-                html_url: 'https://github.com/Snorlax-011/Tech-Mastery',
-                language: 'Multiple',
-                stargazers_count: 0,
-                forks_count: 0,
-                updated_at: new Date().toISOString(),
-                topics: ['learning', 'technology', 'programming', 'resources'],
-                featured: true,
-                language_color: '#2f81f7',
-                health_score: 85
-            }
-        ];
     }
 
     /**
@@ -551,7 +614,7 @@ class GitHubAPI {
     }
 
     /**
-     * Search repositories
+     * Search repositories with learning focus
      */
     async searchRepositories(query, options = {}) {
         try {
