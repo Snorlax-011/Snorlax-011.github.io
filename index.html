@@ -1,22 +1,389 @@
-<immersive type="code" title="index.html (Corrected)">
-
-HTML
-
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-    &lt;title&gt;Abhijith | Tech Enthusiast&lt;/title&gt;
-
-
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;div class=&quot;bg-animation&quot;&gt;&lt;/div&gt;
-
-<div class="terminal-body" id="terminal-body">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Learning Progress | Abhijith - Tech Enthusiast</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Abhijith's learning journey - Documenting my progress in C programming and Tech-Mastery. Follow my coding adventure and explore my learning repositories.">
+    <meta name="keywords" content="Abhijith, Tech Enthusiast, Learning Progress, C Programming, GitHub, Programming Journey, Tech-Mastery">
+    <meta name="author" content="Abhijith">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="My Learning Progress - Abhijith">
+    <meta property="og:description" content="Documenting my learning journey in programming, focusing on C and documenting my Tech-Mastery progress.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://snorlax-011.github.io">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="My Learning Progress - Abhijith">
+    <meta name="twitter:description" content="Documenting my learning journey in programming and Tech-Mastery progress.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Particles.js for background animation -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-book-open"></i>
+                <span class="terminal-cursor"></span>
+            </div>
+            <div class="loading-text">
+                <span class="loading-message">Initializing learning progress...</span>
+                <div class="loading-progress">
+                    <div class="loading-bar"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-&lt;/body&gt;
-&lt;/html&gt;
-</immersive>
+    <!-- Navigation -->
+    <nav class="nav-header" id="nav-header">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-text">
+                    <i class="fas fa-code"></i>
+                    <span>My Learning Progress</span>
+                </div>
+            </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#tech-mastery" class="nav-link">Tech-Mastery</a></li>
+                <li><a href="#learning-status" class="nav-link">Learning Status</a></li>
+            </ul>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="container">
+                <!-- Terminal Window -->
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="terminal-controls">
+                            <div class="terminal-button red"></div>
+                            <div class="terminal-button yellow"></div>
+                            <div class="terminal-button green"></div>
+                        </div>
+                        <div class="terminal-title">Abhijith@learning-progress: ~</div>
+                    </div>
+                    
+                    <div class="terminal-content">
+                        <div class="terminal-output">
+                            <div class="intro-section">
+                                <div class="user-info">
+                                    <h1 class="user-name">Abhijith</h1>
+                                    <p class="user-title">Tech Enthusiast</p>
+                                    <p class="user-bio">Documenting my learning journey.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="terminal-commands">
+                                <div class="terminal-line">
+                                    <span class="prompt">abhijith@learning:~$</span>
+                                    <span class="command" id="cmd-1"></span>
+                                    <span class="cursor">▋</span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="prompt">abhijith@learning:~$</span>
+                                    <span class="command" id="cmd-2"></span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="prompt">abhijith@learning:~$</span>
+                                    <span class="command" id="cmd-3"></span>
+                                </div>
+                                <div class="terminal-line status-line">
+                                    <span class="status-text" id="github-status"></span>
+                                </div>
+                                <div class="terminal-line">
+                                    <span class="prompt">abhijith@learning:~$</span>
+                                    <span class="command" id="final-cmd"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Learning Stats Panel -->
+                        <div class="stats-panel" id="stats-panel">
+                            <div class="stat-item">
+                                <div class="stat-number" id="total-repos">0</div>
+                                <div class="stat-label">Repositories</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="learning-repos">0</div>
+                                <div class="stat-label">Learning Repos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="total-commits">0</div>
+                                <div class="stat-label">Learning Commits</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number" id="c-progress">0</div>
+                                <div class="stat-label">C Progress %</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech-Mastery Showcase Section -->
+        <section id="tech-mastery" class="tech-mastery-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="prompt">$</span> Tech-Mastery Repository
+                    </h2>
+                    <p class="section-description">My comprehensive learning documentation and progress tracker</p>
+                </div>
+                
+                <div class="repo-showcase" id="repo-showcase">
+                    <!-- Repository showcase will be populated by JavaScript -->
+                    <div class="showcase-loading">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                        <p>Loading Tech-Mastery repository data...</p>
+                    </div>
+                </div>
+
+                <!-- Tech-Mastery Details -->
+                <div class="tech-mastery-details">
+                    <div class="details-grid">
+                        <div class="detail-card">
+                            <div class="detail-header">
+                                <i class="fas fa-folder-open"></i>
+                                <h3>Repository Structure</h3>
+                            </div>
+                            <div class="detail-content" id="repo-structure">
+                                <div class="structure-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <span>Analyzing repository structure...</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card">
+                            <div class="detail-header">
+                                <i class="fas fa-code"></i>
+                                <h3>C Programming Progress</h3>
+                            </div>
+                            <div class="detail-content" id="c-programming-progress">
+                                <div class="progress-item">
+                                    <div class="progress-header">
+                                        <span class="progress-title">Chapter 1: Tutorial Introduction</span>
+                                        <span class="progress-percentage">In Progress</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="progress-notes">
+                                    <p><strong>Current Focus:</strong> Learning C fundamentals and basic programming concepts</p>
+                                    <p><strong>Latest Update:</strong> Working on exercises and examples from Chapter 1</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="detail-card full-width">
+                            <div class="detail-header">
+                                <i class="fas fa-file-alt"></i>
+                                <h3>Learning Documentation</h3>
+                            </div>
+                            <div class="detail-content" id="learning-documentation">
+                                <div class="documentation-loading">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                    <span>Fetching learning documentation from GitHub...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Status Section -->
+        <section id="learning-status" class="learning-status-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <span class="prompt">$</span> Current Learning Status
+                    </h2>
+                    <p class="section-description">Real-time progress tracking of my learning journey</p>
+                </div>
+                
+                <div class="learning-dashboard">
+                    <div class="learning-card active-learning">
+                        <div class="learning-header">
+                            <div class="learning-icon">
+                                <i class="fab fa-cuttlefish"></i>
+                            </div>
+                            <div class="learning-title">
+                                <h3>C Programming Language</h3>
+                                <p>The C Programming Language - Kernighan & Ritchie</p>
+                            </div>
+                            <div class="learning-status-badge current">
+                                <i class="fas fa-play"></i>
+                                <span>Currently Learning</span>
+                            </div>
+                        </div>
+                        
+                        <div class="learning-progress">
+                            <div class="progress-overview">
+                                <div class="progress-stats">
+                                    <div class="progress-stat">
+                                        <span class="stat-number">1</span>
+                                        <span class="stat-label">Current Chapter</span>
+                                    </div>
+                                    <div class="progress-stat">
+                                        <span class="stat-number">8</span>
+                                        <span class="stat-label">Total Chapters</span>
+                                    </div>
+                                    <div class="progress-stat">
+                                        <span class="stat-number">15%</span>
+                                        <span class="stat-label">Complete</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="chapter-progress">
+                                    <h4>Chapter 1: A Tutorial Introduction</h4>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                    <div class="progress-details">
+                                        <span>Working on: Getting Started exercises</span>
+                                        <span class="progress-time">Last updated: 2 days ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="learning-actions">
+                            <a href="https://github.com/Snorlax-011/Tech-Mastery" class="action-btn primary" target="_blank" rel="noopener noreferrer">
+                                <i class="fas fa-external-link-alt"></i>
+                                View Progress
+                            </a>
+                            <button class="action-btn secondary" id="refresh-progress">
+                                <i class="fas fa-sync-alt"></i>
+                                Refresh Status
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Learning Activity -->
+                    <div class="activity-feed">
+                        <h3 class="activity-title">
+                            <i class="fas fa-history"></i>
+                            Recent Learning Activity
+                        </h3>
+                        
+                        <div class="activity-list" id="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-description">
+                                        Updated C Programming exercises in Tech-Mastery
+                                    </div>
+                                    <div class="activity-time">2 days ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-description">
+                                        Added notes for Chapter 1 - Variables and Arithmetic
+                                    </div>
+                                    <div class="activity-time">3 days ago</div>
+                                </div>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-file-code"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <div class="activity-description">
+                                        Created new repository structure for learning progress
+                                    </div>
+                                    <div class="activity-time">1 week ago</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Error Container -->
+    <div id="error-container" class="error-container hidden"></div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/github-api.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
+
+    <!-- Analytics (Optional) -->
+    <!-- Add your analytics code here if needed -->
+</body>
+</html>
