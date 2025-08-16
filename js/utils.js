@@ -1,5 +1,5 @@
 /**
- * Utility functions for My Learning Progress
+ * Utility functions for My Learning Progress (BUG-FIXED)
  */
 
 class Utils {
@@ -34,31 +34,43 @@ class Utils {
     }
 
     formatDate(date) {
-        const d = new Date(date);
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return d.toLocaleDateString(undefined, options);
+        try {
+            const d = new Date(date);
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return d.toLocaleDateString(undefined, options);
+        } catch (error) {
+            console.warn('Error formatting date:', error);
+            return 'Unknown date';
+        }
     }
 
     // Format relative time for learning progress
     formatRelativeTime(dateString) {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffInMs = now - date;
-        const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
-        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        if (!dateString) return 'Unknown';
+        
+        try {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffInMs = now - date;
+            const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+            const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-        if (diffInHours < 1) return 'Just updated';
-        if (diffInHours < 24) return `${diffInHours}h ago`;
-        if (diffInDays === 1) return 'Yesterday';
-        if (diffInDays < 7) return `${diffInDays} days ago`;
-        if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
-        if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`;
-        return `${Math.floor(diffInDays / 365)} years ago`;
+            if (diffInHours < 1) return 'Just updated';
+            if (diffInHours < 24) return `${diffInHours}h ago`;
+            if (diffInDays === 1) return 'Yesterday';
+            if (diffInDays < 7) return `${diffInDays} days ago`;
+            if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
+            if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`;
+            return `${Math.floor(diffInDays / 365)} years ago`;
+        } catch (error) {
+            console.warn('Error formatting relative time:', error);
+            return 'Recently';
+        }
     }
 
     // Calculate learning progress percentage
     calculateProgress(completed, total) {
-        if (total === 0) return 0;
+        if (total === 0 || !completed || !total) return 0;
         return Math.round((completed / total) * 100);
     }
 
@@ -74,21 +86,54 @@ class Utils {
 
     // Scroll to element smoothly
     scrollToElement(element, offset = 80) {
-        const elementPosition = element.offsetTop - offset;
-        window.scrollTo({
-            top: elementPosition,
-            behavior: 'smooth'
-        });
+        if (!element) return;
+        
+        try {
+            const elementPosition = element.offsetTop - offset;
+            window.scrollTo({
+                top: elementPosition,
+                behavior: 'smooth'
+            });
+        } catch (error) {
+            console.warn('Error scrolling to element:', error);
+        }
     }
 
     // Check if element is in viewport
     isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top >= 0 &&
-            rect.left >= 0 &&
-            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-        );
+        if (!element) return false;
+        
+        try {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        } catch (error) {
+            console.warn('Error checking viewport:', error);
+            return false;
+        }
+    }
+
+    // Safe DOM query selector
+    safeQuerySelector(selector) {
+        try {
+            return document.querySelector(selector);
+        } catch (error) {
+            console.warn('Error querying selector:', selector, error);
+            return null;
+        }
+    }
+
+    // Safe DOM query selector all
+    safeQuerySelectorAll(selector) {
+        try {
+            return document.querySelectorAll(selector);
+        } catch (error) {
+            console.warn('Error querying selector all:', selector, error);
+            return [];
+        }
     }
 }
