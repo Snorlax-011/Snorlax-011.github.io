@@ -3,186 +3,399 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnostic - Abhijith's Website</title>
+    <title>Abhijith Snorlax | Tech Enthusiast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Emergency CSS - All inline to prevent loading issues */
+        :root {
+            --bg: #0a0a0a;
+            --terminal: #0d1117;
+            --text: #c9d1d9;
+            --blue: #2f81f7;
+            --green: #27c93f;
+            --red: #ff5f56;
+            --yellow: #ffbd2e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: #0a0a0a;
-            color: #c9d1d9;
+            background: var(--bg);
+            color: var(--text);
             font-family: 'Fira Code', monospace;
-            padding: 2rem;
-            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
         }
-        .diagnostic {
-            background: rgba(13, 17, 23, 0.8);
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            background-size: 200% 200%;
+            animation: bgMove 10s ease infinite;
+            z-index: -1;
+        }
+
+        @keyframes bgMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .terminal {
+            background: rgba(13, 17, 23, 0.95);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 2rem;
-            margin: 1rem 0;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(47, 129, 247, 0.3);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
         }
-        .success { color: #27c93f; }
-        .error { color: #da3633; }
-        .warning { color: #d29922; }
-        .info { color: #2f81f7; }
-        pre { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 4px; overflow-x: auto; }
+
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+            margin-right: 15px;
+        }
+
+        .btn {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .btn.red { background: var(--red); }
+        .btn.yellow { background: var(--yellow); }
+        .btn.green { background: var(--green); }
+
+        .terminal-title {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .terminal-body {
+            padding: 30px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .prompt::before {
+            content: '$ ';
+            color: var(--blue);
+            font-weight: bold;
+        }
+
+        .line {
+            margin-bottom: 8px;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .line:nth-child(1) { animation-delay: 0.5s; }
+        .line:nth-child(2) { animation-delay: 1.5s; }
+        .line:nth-child(3) { animation-delay: 2.5s; }
+        .line:nth-child(4) { animation-delay: 3.5s; }
+        .line:nth-child(5) { animation-delay: 4.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 12px;
+            height: 20px;
+            background: var(--blue);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .showcase {
+            background: rgba(47, 129, 247, 0.1);
+            border-left: 4px solid var(--blue);
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            opacity: 0;
+            animation: slideIn 0.8s ease 5.5s forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-3px);
+            border-color: var(--blue);
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--blue);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            background: var(--blue);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: #1e6fd9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(47, 129, 247, 0.4);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--blue);
+            border: 1px solid var(--blue);
+        }
+
+        .action-btn.secondary:hover {
+            background: var(--blue);
+            color: white;
+        }
+
+        .status {
+            margin: 15px 0;
+            padding: 10px 15px;
+            background: rgba(39, 201, 63, 0.1);
+            border-left: 3px solid var(--green);
+            border-radius: 0 4px 4px 0;
+            color: var(--green);
+            font-weight: 500;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .terminal-body { padding: 20px; font-size: 14px; }
+            .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .actions { flex-direction: column; }
+        }
+
+        /* Loading animation */
+        .loading {
+            opacity: 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-    <div class="diagnostic">
-        <h1 class="info">🔧 Website Diagnostic Tool</h1>
-        <p>This page will help identify what's preventing your advanced website from loading.</p>
-    </div>
+    <div class="bg-animation"></div>
 
-    <div class="diagnostic">
-        <h2>📋 File Check Results</h2>
-        <div id="file-results">Checking files...</div>
-    </div>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="btn red"></div>
+                <div class="btn yellow"></div>
+                <div class="btn green"></div>
+            </div>
+            <div class="terminal-title">abhijith@tech-mastery:~$</div>
+        </div>
 
-    <div class="diagnostic">
-        <h2>🌐 External Resources</h2>
-        <div id="external-results">Checking external resources...</div>
-    </div>
+        <div class="terminal-body">
+            <div class="line">
+                <span class="prompt"></span>echo "Welcome to Abhijith's Tech-Mastery! 😉"
+            </div>
+            <div class="line">
+                <span class="prompt"></span>git clone https://github.com/Snorlax-011/Tech-Mastery.git
+            </div>
+            <div class="line">
+                <span class="prompt"></span>cd Tech-Mastery && npm run showcase --advanced
+            </div>
+            <div class="line">
+                <span class="prompt"></span>echo "Connecting to GitHub API..."
+            </div>
+            <div class="line">
+                <span class="prompt"></span>echo "Ready to explore my journey! 🚀"<span class="cursor"></span>
+            </div>
 
-    <div class="diagnostic">
-        <h2>🐛 JavaScript Errors</h2>
-        <div id="error-results">Monitoring for errors...</div>
-    </div>
+            <div class="showcase">
+                <div class="line" style="animation: none; opacity: 1;">
+                    <span class="prompt"></span>Repository: <strong>Tech-Mastery</strong>
+                </div>
 
-    <div class="diagnostic">
-        <h2>💡 Recommendations</h2>
-        <div id="recommendations">Analyzing...</div>
+                <div class="status" id="github-status">
+                    <span class="loading">🔄 Connecting to GitHub API...</span>
+                </div>
+
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-value" id="repos-count">-</span>
+                        <span class="stat-label">Repositories</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="stars-count">-</span>
+                        <span class="stat-label">Total Stars</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="langs-count">-</span>
+                        <span class="stat-label">Languages</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value" id="updated">-</span>
+                        <span class="stat-label">Last Updated</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="https://github.com/Snorlax-011/Tech-Mastery" target="_blank" class="action-btn">
+                        🔗 View Repository
+                    </a>
+                    <a href="https://github.com/Snorlax-011" target="_blank" class="action-btn secondary">
+                        👤 GitHub Profile
+                    </a>
+                    <a href="https://snorlax-011.github.io/Tech-Mastery/" target="_blank" class="action-btn secondary">
+                        🚀 Live Demo
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        const fileResults = document.getElementById('file-results');
-        const externalResults = document.getElementById('external-results');
-        const errorResults = document.getElementById('error-results');
-        const recommendations = document.getElementById('recommendations');
+        // GitHub API integration (completely self-contained)
+        async function loadGitHubData() {
+            const statusEl = document.getElementById('github-status');
+            const reposEl = document.getElementById('repos-count');
+            const starsEl = document.getElementById('stars-count');
+            const langsEl = document.getElementById('langs-count');
+            const updatedEl = document.getElementById('updated');
 
-        let errors = [];
-        let issues = [];
+            try {
+                // Fetch user data
+                const userResponse = await fetch('https://api.github.com/users/Snorlax-011');
+                const userData = await userResponse.json();
 
-        // Check for JavaScript errors
+                // Fetch repositories
+                const reposResponse = await fetch('https://api.github.com/users/Snorlax-011/repos?sort=updated&per_page=100');
+                const reposData = await reposResponse.json();
+
+                if (userData && reposData) {
+                    // Calculate stats
+                    const totalStars = reposData.reduce((sum, repo) => sum + repo.stargazers_count, 0);
+                    const languages = [...new Set(reposData.map(repo => repo.language).filter(Boolean))];
+                    const lastUpdated = new Date().toLocaleDateString();
+
+                    // Update UI
+                    statusEl.innerHTML = '✅ GitHub API connected successfully!';
+                    statusEl.style.background = 'rgba(39, 201, 63, 0.1)';
+                    statusEl.style.borderColor = '#27c93f';
+                    statusEl.style.color = '#27c93f';
+
+                    reposEl.textContent = userData.public_repos || reposData.length;
+                    starsEl.textContent = totalStars;
+                    langsEl.textContent = languages.length;
+                    updatedEl.textContent = 'Today';
+
+                    console.log('✅ GitHub data loaded successfully');
+                } else {
+                    throw new Error('Invalid API response');
+                }
+
+            } catch (error) {
+                console.warn('GitHub API error:', error);
+
+                // Fallback data
+                statusEl.innerHTML = '⚠️ Using offline data (API limit reached)';
+                statusEl.style.background = 'rgba(210, 153, 34, 0.1)';
+                statusEl.style.borderColor = '#d29922';
+                statusEl.style.color = '#d29922';
+
+                reposEl.textContent = '5+';
+                starsEl.textContent = '0';
+                langsEl.textContent = '8+';
+                updatedEl.textContent = 'Recently';
+            }
+        }
+
+        // Load GitHub data after animations
+        setTimeout(() => {
+            loadGitHubData();
+        }, 6000);
+
+        // Error handler
         window.addEventListener('error', (e) => {
-            errors.push(`Error: ${e.message} at ${e.filename}:${e.lineno}`);
-            updateErrorResults();
+            console.error('Error:', e.message);
+            document.getElementById('github-status').innerHTML = '⚠️ Page loaded with minor issues';
         });
 
-        // Check for unhandled promise rejections
-        window.addEventListener('unhandledrejection', (e) => {
-            errors.push(`Unhandled Promise: ${e.reason}`);
-            updateErrorResults();
-        });
-
-        function updateErrorResults() {
-            if (errors.length === 0) {
-                errorResults.innerHTML = '<span class="success">✅ No JavaScript errors detected</span>';
-            } else {
-                errorResults.innerHTML = '<span class="error">❌ JavaScript Errors Found:</span><pre>' + 
-                    errors.join('\n') + '</pre>';
-            }
-        }
-
-        // Check if files exist by trying to fetch them
-        async function checkFiles() {
-            const files = [
-                'css/styles.css',
-                'js/config.js',
-                'js/utils.js',
-                'js/animations.js',
-                'js/components.js',
-                'js/github-api.js',
-                'js/app.js',
-                'sw.js'
-            ];
-
-            let results = [];
-
-            for (const file of files) {
-                try {
-                    const response = await fetch(file, { method: 'HEAD' });
-                    if (response.ok) {
-                        results.push(`<span class="success">✅ ${file} - Found</span>`);
-                    } else {
-                        results.push(`<span class="error">❌ ${file} - Missing (${response.status})</span>`);
-                        issues.push(`Missing file: ${file}`);
-                    }
-                } catch (error) {
-                    results.push(`<span class="error">❌ ${file} - Error: ${error.message}</span>`);
-                    issues.push(`File error: ${file} - ${error.message}`);
-                }
-            }
-
-            fileResults.innerHTML = results.join('<br>');
-        }
-
-        // Check external resources
-        async function checkExternalResources() {
-            const externals = [
-                'https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap',
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-                'https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js'
-            ];
-
-            let results = [];
-
-            for (const url of externals) {
-                try {
-                    const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
-                    results.push(`<span class="success">✅ External resource accessible</span>`);
-                } catch (error) {
-                    results.push(`<span class="warning">⚠️ External resource check failed (expected for CORS)</span>`);
-                }
-            }
-
-            externalResults.innerHTML = results.join('<br>');
-        }
-
-        // Generate recommendations
-        function generateRecommendations() {
-            let recs = [];
-
-            if (issues.length === 0 && errors.length === 0) {
-                recs.push('<span class="success">✅ No issues detected! Your website should be working properly.</span>');
-                recs.push('<span class="info">💡 If you're still seeing errors, try:</span>');
-                recs.push('• Hard refresh (Ctrl+F5 or Cmd+Shift+R)');
-                recs.push('• Clear browser cache');
-                recs.push('• Wait a few minutes for GitHub Pages to fully deploy');
-            } else {
-                recs.push('<span class="error">🔧 Issues Found - Here's how to fix them:</span>');
-
-                if (issues.some(i => i.includes('config.js'))) {
-                    recs.push('• <strong>Fix:</strong> Create js/config.js with the configuration code');
-                }
-
-                if (issues.some(i => i.includes('styles.css'))) {
-                    recs.push('• <strong>Fix:</strong> Create css/styles.css with the CSS code');
-                }
-
-                if (issues.length > 3) {
-                    recs.push('• <strong>Fix:</strong> It looks like multiple files are missing. You may need to recreate them.');
-                }
-
-                if (errors.length > 0) {
-                    recs.push('• <strong>Fix:</strong> JavaScript errors detected. Check the console for specific error messages.');
-                }
-            }
-
-            recommendations.innerHTML = recs.join('<br>');
-        }
-
-        // Run diagnostics
-        async function runDiagnostics() {
-            await checkFiles();
-            await checkExternalResources();
-
-            // Wait a moment for any immediate errors
-            setTimeout(() => {
-                updateErrorResults();
-                generateRecommendations();
-            }, 2000);
-        }
-
-        runDiagnostics();
+        console.log('🚀 Tech-Mastery website loaded successfully!');
     </script>
 </body>
 </html>
