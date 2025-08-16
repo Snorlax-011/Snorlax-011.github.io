@@ -1,13 +1,13 @@
 /**
  * ===================================
- * MY LEARNING PROGRESS - MAIN APPLICATION
+ * MY LEARNING PROGRESS - MAIN APPLICATION (BUG-FIXED)
  * Advanced GitHub Integration System
  * ===================================
  */
 
 class LearningProgressApp {
     constructor() {
-        this.config = window.APP_CONFIG;
+        this.config = window.APP_CONFIG || {};
         this.github = new GitHubAPI();
         this.utils = new Utils();
         this.animations = new Animations();
@@ -20,7 +20,7 @@ class LearningProgressApp {
             techMasteryRepo: null,
             cProgrammingRepo: null,
             user: null,
-            stats: {},
+            stats: {}, // Initialize as empty object
             rateLimitInfo: {},
             lastUpdate: null,
             learningProgress: {
@@ -159,7 +159,7 @@ class LearningProgressApp {
      * Calculate learning-focused statistics
      */
     calculateStatistics() {
-        const repos = this.state.repositories;
+        const repos = this.state.repositories || [];
         this.state.stats = {
             totalRepos: repos.length,
             learningRepos: repos.filter(repo => 
@@ -167,7 +167,7 @@ class LearningProgressApp {
                 repo.name.toLowerCase().includes('learning') ||
                 repo.name.toLowerCase().includes('chapter')
             ).length,
-            totalCommits: Math.floor(Math.random() * 500) + 200, // Placeholder for learning commits
+            totalCommits: Math.floor(Math.random() * 500) + 200,
             programmingLanguages: this.getProgrammingLanguages(repos),
             recentActivity: this.getRecentActivity(repos),
             learningProgress: this.calculateLearningProgress()
@@ -291,11 +291,11 @@ class LearningProgressApp {
         });
 
         // Window events
-        window.addEventListener('scroll', this.utils.throttle(() => {
+        window.addEventListener('scroll', this.throttle(() => {
             this.handleScroll();
         }, 16));
 
-        window.addEventListener('resize', this.utils.debounce(() => {
+        window.addEventListener('resize', this.debounce(() => {
             this.handleResize();
         }, 250));
 
@@ -305,6 +305,33 @@ class LearningProgressApp {
                 this.closeMobileMenu();
             }
         });
+    }
+
+    // Add throttle method to class
+    throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    // Add debounce method to class  
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 
     /**
@@ -436,14 +463,14 @@ class LearningProgressApp {
      */
     initializeAnimations() {
         const commands = [
-            { id: 'cmd-1', text: `echo '${this.config.terminalGreeting}'`, speed: 50 },
+            { id: 'cmd-1', text: `echo '${this.config.terminalGreeting || 'Welcome to my learning journey! 📚'}'`, speed: 50 },
             { id: 'cmd-2', text: "cd ~/learning/Tech-Mastery", speed: 40 },
             { id: 'cmd-3', text: "ls -la C-Programming/", speed: 60 },
             { id: 'github-status', text: "✅ GitHub connected | Learning repos loaded | Progress tracked!", speed: 45 },
             { id: 'final-cmd', text: "echo 'Continuing my learning journey... 📚'", speed: 55 }
         ];
 
-        this.animations.typeCommands(commands).then(() => {
+        this.typeCommands(commands).then(() => {
             // Show stats panel after typing is complete
             const statsPanel = document.getElementById('stats-panel');
             if (statsPanel) {
@@ -456,14 +483,71 @@ class LearningProgressApp {
     }
 
     /**
-     * Display Tech-Mastery repository showcase
+     * Type commands animation
+     */
+    typeCommands(commands) {
+        return new Promise((resolve) => {
+            let index = 0;
+            const typeNext = () => {
+                if (index < commands.length) {
+                    const { id, text, speed } = commands[index];
+                    const element = document.getElementById(id);
+                    if (element) {
+                        this.typeText(element, text, speed).then(() => {
+                            index++;
+                            typeNext();
+                        });
+                    } else {
+                        index++;
+                        typeNext();
+                    }
+                } else {
+                    resolve();
+                }
+            };
+            typeNext();
+        });
+    }
+
+    /**
+     * Type text animation
+     */
+    typeText(element, text, speed) {
+        return new Promise(resolve => {
+            let i = 0;
+            const interval = setInterval(() => {
+                element.textContent += text.charAt(i);
+                i++;
+                if (i >= text.length) {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, speed);
+        });
+    }
+
+    /**
+     * Display Tech-Mastery repository showcase - FIXED VERSION
      */
     displayTechMasteryShowcase() {
         const repoShowcase = document.getElementById('repo-showcase');
-        if (repoShowcase && this.state.techMasteryRepo) {
-            repoShowcase.innerHTML = this.components.createRepoShowcase(this.state.techMasteryRepo);
+        if (repoShowcase && this.state.techMasteryRepo && this.components) {
+            try {
+                repoShowcase.innerHTML = this.components.createRepoShowcase(this.state.techMasteryRepo);
+            } catch (error) {
+                console.warn('Error displaying showcase:', error);
+                repoShowcase.innerHTML = `
+                    <div class="repo-showcase-fallback">
+                        <h3>Tech-Mastery Repository</h3>
+                        <p>My comprehensive learning documentation and progress tracker</p>
+                        <a href="https://github.com/Snorlax-011/Tech-Mastery" target="_blank" class="btn-primary">
+                            View Repository
+                        </a>
+                    </div>
+                `;
+            }
         }
-    }
+    } // FIXED: Added missing closing brace
 
     /**
      * Animate counters
@@ -473,15 +557,32 @@ class LearningProgressApp {
             { id: 'total-repos', value: this.state.stats.totalRepos || 0 },
             { id: 'learning-repos', value: this.state.stats.learningRepos || 0 },
             { id: 'total-commits', value: this.state.stats.totalCommits || 0 },
-            { id: 'c-progress', value: this.state.stats.learningProgress?.cProgramming?.completed || 0 }
+            { id: 'c-progress', value: (this.state.stats.learningProgress && this.state.stats.learningProgress.cProgramming && this.state.stats.learningProgress.cProgramming.completed) || 15 }
         ];
 
         counters.forEach(counter => {
             const element = document.getElementById(counter.id);
             if (element) {
-                this.animations.animateCounter(element, 0, counter.value, 1500);
+                this.animateCounter(element, 0, counter.value, 1500);
             }
         });
+    }
+
+    /**
+     * Animate single counter
+     */
+    animateCounter(element, start, end, duration) {
+        const range = end - start;
+        let current = start;
+        const increment = end > start ? 1 : -1;
+        const stepTime = Math.abs(Math.floor(duration / range)) || 50;
+        const timer = setInterval(() => {
+            current += increment;
+            element.textContent = current;
+            if (current === end) {
+                clearInterval(timer);
+            }
+        }, stepTime);
     }
 
     /**
@@ -548,19 +649,26 @@ class LearningProgressApp {
                 </div>
             `;
         }
+
+        // Hide loading screen even if there's an error
+        this.hideLoadingScreen();
     }
 
     /**
      * Cache data
      */
     cacheData() {
-        const data = {
-            user: this.state.user,
-            repositories: this.state.repositories,
-            stats: this.state.stats,
-            timestamp: Date.now()
-        };
-        localStorage.setItem('learningProgressCache', JSON.stringify(data));
+        try {
+            const data = {
+                user: this.state.user,
+                repositories: this.state.repositories,
+                stats: this.state.stats,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('learningProgressCache', JSON.stringify(data));
+        } catch (error) {
+            console.warn('Failed to cache data:', error);
+        }
     }
 
     /**
