@@ -30,7 +30,7 @@ body {
 .content-container {
     max-width: 960px;
     /* Increased left padding for a stronger left alignment */
-    padding: 4rem 10%; 
+    padding: 4rem 5%; 
     position: relative;
     z-index: 1;
 }
