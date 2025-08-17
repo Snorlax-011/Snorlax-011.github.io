@@ -10,10 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Fira+Code&display=swap" rel="stylesheet">
     
-    <!-- Link to your future CSS file -->
+    <!-- Link to your CSS file -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Prism.js for syntax highlighting (we'll still need this) -->
+    <!-- Prism.js for syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
 </head>
 <body>
@@ -30,32 +30,28 @@
             <p class="subtitle">Welcome to my corner of the web. Brace yourselves!</p>
         </header>
 
-        <!-- C Repository Section -->
-        <section id="c-repository" class="repository-section">
-            <h2>C Repository: The C Programming Language</h2>
-            <div class="tabs">
-                <button class="tab-link active" onclick="openTab(event, 'Concepts')">Concepts</button>
-                <button class="tab-link" onclick="openTab(event, 'Code')">Code</button>
-            </div>
+        <!-- C Repository Content (No longer in a 'section' block) -->
+        <h2>C Repository: The C Programming Language</h2>
+        <div class="tabs">
+            <button class="tab-link active" onclick="openTab(event, 'Concepts')">Concepts</button>
+            <button class="tab-link" onclick="openTab(event, 'Code')">Code</button>
+        </div>
 
-            <!-- Concepts Tab Content -->
-            <div id="Concepts" class="tab-content" style="display: block;">
-                <h3>Concepts</h3>
-                <div id="concepts-content" class="markdown-body">
-                    <!-- Markdown content for concepts will be loaded here -->
-                    <p>Loading concepts...</p>
-                </div>
+        <!-- Concepts Tab Content -->
+        <div id="Concepts" class="tab-content" style="display: block;">
+            <div id="concepts-content" class="markdown-body">
+                <!-- Markdown content for concepts will be loaded here -->
+                <p>Loading concepts...</p>
             </div>
+        </div>
 
-            <!-- Code Tab Content -->
-            <div id="Code" class="tab-content">
-                <h3>Code</h3>
-                <div id="code-content" class="markdown-body">
-                    <!-- Markdown content for code will be loaded here -->
-                    <p>Loading code examples...</p>
-                </div>
+        <!-- Code Tab Content -->
+        <div id="Code" class="tab-content">
+            <div id="code-content" class="markdown-body">
+                <!-- Markdown content for code will be loaded here -->
+                <p>Loading code examples...</p>
             </div>
-        </section>
+        </div>
 
     </main>
 
@@ -65,7 +61,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
-    <!-- Link to your future JavaScript file -->
+    <!-- Link to your JavaScript file -->
     <script src="script.js"></script>
 
 </body>
