@@ -56,6 +56,26 @@ while (/* some condition */)
 \`\`\`
 
 **"while"** the condition in the parentheses is true, the body (code) of the loop will be executed. The condition is tested before each iteration. The loop continues until the condition becomes false, at which point the loop ends.
+
+---
+
+# For Loop
+
+### Syntax
+\`\`\`c
+for (initialization; condition; increment)
+{
+    /*
+     * body of the loop
+     */
+}
+\`\`\`
+
+### Execution Flow
+1.  The **initialization** statement is executed once at the very beginning.
+2.  The **condition** is evaluated. If it's true, the body of the loop is executed.
+3.  The **increment** statement is executed after the body.
+4.  The process repeats from step 2. The loop terminates when the **condition** becomes false.
     `,
     code: `
 <!-- The Code tab is currently empty. -->
@@ -128,7 +148,7 @@ function openMainTab(evt, tabName) {
 function openSubTab(evt, tabName) {
     const tabcontent = document.getElementsByClassName("sub-tab-content");
     for (let i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+        tabcontent[i].className = tabcontent[i].className.replace(" active", "");
     }
     const tablinks = document.getElementsByClassName("sub-tab-link");
     for (let i = 0; i < tablinks.length; i++) {
