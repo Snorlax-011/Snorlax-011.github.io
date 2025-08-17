@@ -29,7 +29,6 @@ body {
 /* Main content container styling */
 .content-container {
     max-width: 960px;
-    /* Increased left padding for a stronger left alignment */
     padding: 4rem 5%; 
     position: relative;
     z-index: 1;
@@ -38,11 +37,11 @@ body {
 /* Hero Section */
 .hero-section {
     text-align: left;
-    margin-bottom: 5rem;
+    margin-bottom: 3rem;
 }
 
 .hero-section h1 {
-    font-size: 3.5rem; /* Slightly larger for more impact */
+    font-size: 3.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -52,50 +51,81 @@ body {
     font-family: 'Fira Code', monospace;
 }
 
-/* REMOVED all .repository-section styles */
-
-/* New styles for the H2 that was inside the card */
 h2 {
     margin-top: 0;
-    border-bottom: 1px solid var(--border-color);
     padding-bottom: 1rem;
     margin-bottom: 1.5rem;
     font-size: 2rem;
 }
 
-/* Tab styling */
-.tabs {
-    overflow: hidden;
-    margin-bottom: 1.5rem;
+/* --- Tab Styles --- */
+
+/* Level 1: Main Tabs (My Journey) */
+.main-tabs {
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+.main-tab-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 1rem 0;
+    margin-right: 2rem;
+    font-size: 1.25rem;
+    color: var(--secondary-text-color);
+    border-bottom: 3px solid transparent;
+    transition: 0.3s;
+}
+.main-tab-link.active {
+    color: var(--primary-text-color);
+    border-bottom-color: var(--accent-color);
 }
 
-.tab-link {
-    background-color: transparent;
+/* Level 2: Sub Tabs (C, Python, etc.) */
+.sub-tabs {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+.sub-tab-link {
+    background: none;
     border: none;
-    outline: none;
     cursor: pointer;
-    padding: 14px 0; /* Removed horizontal padding */
-    margin-right: 24px; /* Added margin for spacing */
+    padding: 0.75rem 0;
+    margin-right: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--secondary-text-color);
+    border-bottom: 2px solid transparent;
     transition: 0.3s;
+}
+.sub-tab-link.active {
+    color: var(--primary-text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+/* Level 3: Content Tabs (Concepts, Code) */
+.tabs {
+    margin-bottom: 1.5rem;
+}
+.tab-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    margin-right: 1.5rem;
     font-size: 1rem;
     color: var(--secondary-text-color);
     border-bottom: 2px solid transparent;
+    transition: 0.3s;
 }
-
-.tab-link:hover {
-    color: var(--primary-text-color);
-}
-
 .tab-link.active {
     color: var(--primary-text-color);
-    border-bottom: 2px solid var(--accent-color);
 }
 
-.tab-content {
+/* Generic Tab Content Styles */
+.main-tab-content, .sub-tab-content, .tab-content {
     display: none;
     animation: fadeIn 0.5s;
 }
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -105,21 +135,17 @@ h2 {
 .markdown-body {
     line-height: 1.7;
 }
-
 .markdown-body h1, .markdown-body h2, .markdown-body h3 {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 0.3em;
 }
-
 .markdown-body a {
     color: var(--accent-color);
     text-decoration: none;
 }
-
 .markdown-body a:hover {
     text-decoration: underline;
 }
-
 .markdown-body code:not([class*="language-"]) {
     background-color: rgba(110, 118, 129, 0.4);
     border-radius: 6px;
@@ -127,23 +153,19 @@ h2 {
     font-size: 85%;
     font-family: 'Fira Code', monospace;
 }
-
 .markdown-body pre {
     border-radius: 6px;
     padding: 16px;
     overflow: auto;
 }
-
 .markdown-body blockquote {
     padding: 0 1em;
     color: var(--secondary-text-color);
     border-left: 0.25em solid #30363d;
 }
-
 .markdown-body ul, .markdown-body ol {
     padding-left: 2em;
 }
-
 .markdown-body img {
     max-width: 100%;
 }
