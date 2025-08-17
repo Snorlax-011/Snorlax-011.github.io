@@ -1,5 +1,4 @@
 // --- Placeholder Content ---
-// In a real application, you might fetch this from a file or an API.
 const markdownContent = {
     concepts: `
 # C Language Concepts
@@ -61,7 +60,7 @@ int main() {
 // --- Main Script Logic ---
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. Initialize Particle Background
+    // Initialize Particle Background
     tsParticles.load("tsparticles", {
         background: { color: { value: "#0a0a0a" } },
         fpsLimit: 60,
@@ -89,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detectRetina: true,
     });
 
-    // 2. Load and Render Markdown Content
+    // Load and Render Markdown Content
     const conceptsDiv = document.getElementById('concepts-content');
     const codeDiv = document.getElementById('code-content');
 
@@ -104,21 +103,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// 3. Tab Switching Functionality
-function openTab(evt, tabName) {
-    // Get all elements with class="tab-content" and hide them
-    const tabcontent = document.getElementsByClassName("tab-content");
+// --- Tab Switching Functions ---
+
+// Level 1: Main Tabs (My Journey)
+function openMainTab(evt, tabName) {
+    const tabcontent = document.getElementsByClassName("main-tab-content");
     for (let i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = "none";
     }
-
-    // Get all elements with class="tab-link" and remove the class "active"
-    const tablinks = document.getElementsByClassName("tab-link");
+    const tablinks = document.getElementsByClassName("main-tab-link");
     for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
-
-    // Show the current tab, and add an "active" class to the button that opened the tab
     document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Level 2: Sub Tabs (C, Python, etc.)
+function openSubTab(evt, tabName) {
+    const tabcontent = document.getElementsByClassName("sub-tab-content");
+    for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    const tablinks = document.getElementsByClassName("sub-tab-link");
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Level 3: Content Tabs (Concepts, Code)
+function openContentTab(evt, tabName) {
+    // This function is scoped within the active sub-tab content
+    const activeSubTab = evt.currentTarget.closest('.sub-tab-content');
+    const tabcontent = activeSubTab.getElementsByClassName("tab-content");
+    for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    const tablinks = activeSubTab.getElementsByClassName("tab-link");
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    activeSubTab.querySelector(`#${tabName}`).style.display = "block";
     evt.currentTarget.className += " active";
 }
