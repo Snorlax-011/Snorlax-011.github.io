@@ -1,6 +1,6 @@
 // --- User-Provided Content ---
 const markdownContent = {
-    concepts: `
+    formatting: `
 # Formatting
 
 **Format string:** A string that dictates the structure of the output using format specifiers.
@@ -40,9 +40,8 @@ printf("%6.9f", 3.14159265358979323846);
 
 - \`\\t\`: prints a tab (indents text to the next tab stop).
 - \`\\n\`: moves cursor to the next line.
-
----
-
+    `,
+    whileLoop: `
 # While Loop
 
 ### Syntax
@@ -56,9 +55,8 @@ while (/* some condition */)
 \`\`\`
 
 **"while"** the condition in the parentheses is true, the body (code) of the loop will be executed. The condition is tested before each iteration. The loop continues until the condition becomes false, at which point the loop ends.
-
----
-
+    `,
+    forLoop: `
 # For Loop
 
 ### Syntax
@@ -88,39 +86,36 @@ document.addEventListener('DOMContentLoaded', () => {
     tsParticles.load("tsparticles", {
         background: { color: { value: "#0a0a0a" } },
         fpsLimit: 60,
-        interactivity: {
-            events: { onHover: { enable: true, mode: "repulse" } },
-            modes: { repulse: { distance: 100, duration: 0.4 } },
-        },
+        interactivity: { events: { onHover: { enable: true, mode: "repulse" } } },
         particles: {
             color: { value: "#ffffff" },
             links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.1, width: 1 },
-            collisions: { enable: true },
-            move: {
-                direction: "none",
-                enable: true,
-                outModes: { default: "bounce" },
-                random: false,
-                speed: 1,
-                straight: false,
-            },
+            move: { direction: "none", enable: true, outModes: { default: "bounce" }, speed: 1 },
             number: { density: { enable: true, area: 800 }, value: 80 },
             opacity: { value: 0.1 },
             shape: { type: "circle" },
             size: { value: { min: 1, max: 5 } },
         },
-        detectRetina: true,
     });
 
-    // Load and Render Markdown Content
-    const conceptsDiv = document.getElementById('concepts-content');
+    // Load and Render ALL Markdown Content into their divs
+    const formattingDiv = document.getElementById('FormattingFile');
+    const whileLoopDiv = document.getElementById('WhileLoopFile');
+    const forLoopDiv = document.getElementById('ForLoopFile');
     const codeDiv = document.getElementById('code-content');
 
-    if (conceptsDiv) {
-        conceptsDiv.innerHTML = marked.parse(markdownContent.concepts);
-        Prism.highlightAllUnder(conceptsDiv);
+    if (formattingDiv) {
+        formattingDiv.innerHTML = marked.parse(markdownContent.formatting);
+        Prism.highlightAllUnder(formattingDiv);
     }
-
+    if (whileLoopDiv) {
+        whileLoopDiv.innerHTML = marked.parse(markdownContent.whileLoop);
+        Prism.highlightAllUnder(whileLoopDiv);
+    }
+    if (forLoopDiv) {
+        forLoopDiv.innerHTML = marked.parse(markdownContent.forLoop);
+        Prism.highlightAllUnder(forLoopDiv);
+    }
     if (codeDiv) {
         codeDiv.innerHTML = marked.parse(markdownContent.code);
         Prism.highlightAllUnder(codeDiv);
@@ -129,46 +124,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Tab Switching Functions ---
 
-// Level 1: Main Tabs (My Journey)
 function openMainTab(evt, tabName) {
     const tabcontent = document.getElementsByClassName("main-tab-content");
-    for (let i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
+    for (let i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
     const tablinks = document.getElementsByClassName("main-tab-link");
-    for (let i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    for (let i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
 
-// Level 2: Sub Tabs (C, Python, etc.)
 function openSubTab(evt, tabName) {
     const tabcontent = document.getElementsByClassName("sub-tab-content");
-    for (let i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].className = tabcontent[i].className.replace(" active", "");
-    }
+    for (let i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
     const tablinks = document.getElementsByClassName("sub-tab-link");
-    for (let i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    for (let i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
 }
 
-// Level 3: Content Tabs (Concepts, Code)
 function openContentTab(evt, tabName) {
-    // This function is scoped within the active sub-tab content
     const activeSubTab = evt.currentTarget.closest('.sub-tab-content');
     const tabcontent = activeSubTab.getElementsByClassName("tab-content");
-    for (let i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
+    for (let i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
     const tablinks = activeSubTab.getElementsByClassName("tab-link");
-    for (let i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+    for (let i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
     activeSubTab.querySelector(`#${tabName}`).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// NEW: Function for Level 4 File Tabs
+function openFileTab(evt, tabName) {
+    const activeContentTab = evt.currentTarget.closest('.tab-content');
+    const tabcontent = activeContentTab.getElementsByClassName("file-tab-content");
+    for (let i = 0; i < tabcontent.length; i++) { tabcontent[i].style.display = "none"; }
+    const tablinks = activeContentTab.getElementsByClassName("file-tab-link");
+    for (let i = 0; i < tablinks.length; i++) { tablinks[i].className = tablinks[i].className.replace(" active", ""); }
+    activeContentTab.querySelector(`#${tabName}`).style.display = "block";
     evt.currentTarget.className += " active";
 }
