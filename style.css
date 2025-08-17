@@ -29,16 +29,17 @@ body {
 
 /* Main content container styling */
 .content-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 4rem 2rem;
+    max-width: 960px; /* Set a max-width for readability on large screens */
+    /* REMOVED: margin: 0 auto; to stop centering */
+    /* ADDED: Padding to create space on the left and right */
+    padding: 4rem 8%; 
     position: relative;
     z-index: 1;
 }
 
 /* Hero Section */
 .hero-section {
-    text-align: center;
+    text-align: left; /* CHANGED: from 'center' to 'left' */
     margin-bottom: 5rem;
 }
 
