@@ -1,6 +1,6 @@
 // ===================================================================================
 // YOUR CONTENT DATABASE
-// To add a new part, just copy one of the blocks and paste it at the end of the list.
+// This now contains the full, unedited content from your files.
 // ===================================================================================
 const conceptsDatabase = [
     {
@@ -14,7 +14,38 @@ const conceptsDatabase = [
 **Format specifiers:** Starts with \`%\` and acts as a placeholder for the things we provide in the arguments.
 
 - **Width:** The number right after the \`%\`.
+    - Specifies the minimum number of characters for the output.
+    - Useful for inserting space to look nice.
+
 - **Precision:** The number that comes after the decimal point.
+    - Controls the number of digits to show after the decimal point.
+
+---
+### Examples
+
+\`%d\`: for printing an integer
+\`%f\`: for printing a float (with any no. of decimal spaces)
+
+\`%4d\` or \`%4f\`: for printing a number that is at least 4 characters wide.
+\`\`\`c
+// adds 2 spaces before 69 since the minimum width is 4 and 69 is just 2 characters
+printf("%4d", 69); // --> outputs '  69'
+\`\`\`
+
+\`%.8f\`: for printing floats with 8 digits after the decimal point.
+\`\`\`c
+// outputs 3.141592654 (9 digits after the decimal point). 
+// Here minimum width of 6 is met since 3.141592654 contains 11 characters.
+printf("%6.9f", 3.14159265358979323846);
+\`\`\`
+
+> \`printf\` uses \`%f\` for both \`float\` and \`double\`.
+
+---
+### Escape sequences:
+
+- \`\\t\`: prints a tab (indents text to the next tab stop).
+- \`\\n\`: moves cursor to the next line.
 `
     },
     {
@@ -25,13 +56,15 @@ const conceptsDatabase = [
 
 ### Syntax
 \`\`\`c
-while (/* some condition */)
+while (/* ..some condition.. */)
 {
-    /* code to be executed */
+    /*
+     * code
+     */
 }
 \`\`\`
 
-**"while"** the condition in the parentheses is true, the body (code) of the loop will be executed. The condition is tested before each iteration.
+**"while"** the condition in the parentheses is true, the body (code) of the loop will be executed. The condition will be tested and executed until the condition becomes false, at which point, the loop ends.
 `
     },
     {
@@ -44,11 +77,15 @@ while (/* some condition */)
 \`\`\`c
 for(initialization; condition; increment)
 {
-    /* body */
+    /*
+     * body
+     */
 }
 \`\`\`
 
-After initialization, the condition will be evaluated and if it's true, the body will be executed. Then occurs the increment and the condition will be re-evaluated.
+After initialization, the condition will be evaluated and if it's true, the body will be executed. Then occurs the increment and the condition will be re-evaluated....
+
+The program will exit the loop when the condition isn't met.
 `
     }
     // PASTE NEW PARTS HERE
@@ -61,17 +98,32 @@ After initialization, the condition will be evaluated and if it's true, the body
 // --- Main Script Logic ---
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Initialize Particle Background
+    // Initialize Particle Background (Restored to original settings)
     tsParticles.load("tsparticles", {
         background: { color: { value: "#0a0a0a" } },
         fpsLimit: 60,
-        interactivity: { events: { onHover: { enable: true, mode: "repulse" } } },
+        interactivity: {
+            events: { onHover: { enable: true, mode: "repulse" } },
+            modes: { repulse: { distance: 100, duration: 0.4 } },
+        },
         particles: {
             color: { value: "#ffffff" },
             links: { color: "#ffffff", distance: 150, enable: true, opacity: 0.1, width: 1 },
-            move: { direction: "none", enable: true, outModes: { default: "bounce" }, speed: 1 },
+            collisions: { enable: true },
+            move: {
+                direction: "none",
+                enable: true,
+                outModes: { default: "bounce" },
+                random: false,
+                speed: 1,
+                straight: false,
+            },
             number: { density: { enable: true, area: 800 }, value: 80 },
+            opacity: { value: 0.1 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 5 } },
         },
+        detectRetina: true,
     });
 
     // --- Auto-generate Menu and Content from the Database ---
@@ -107,21 +159,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Tab Switching Functions ---
 
-// This function now controls the dynamic parts
 function openContentPart(partId) {
-    // Hide all content parts
     const allContent = document.querySelectorAll('.content-part');
     allContent.forEach(part => part.style.display = 'none');
 
-    // Deactivate all menu buttons
     const allButtons = document.querySelectorAll('.menu-button');
     allButtons.forEach(btn => btn.classList.remove('active'));
 
-    // Show the selected content part
     document.getElementById(partId).style.display = 'block';
 
-    // Activate the clicked menu button
-    // We find the button by looping through them and checking their text content
     allButtons.forEach(btn => {
         const correspondingPart = conceptsDatabase.find(p => p.title === btn.textContent);
         if (correspondingPart && correspondingPart.id === partId) {
@@ -130,8 +176,6 @@ function openContentPart(partId) {
     });
 }
 
-
-// These functions are for the static tabs (Concepts/Code)
 function openContentTab(evt, tabName) {
     const activeSubTab = evt.currentTarget.closest('.sub-tab-content');
     const tabcontent = activeSubTab.getElementsByClassName("tab-content");
