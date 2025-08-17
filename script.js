@@ -1,59 +1,48 @@
-// --- Placeholder Content ---
+// --- User-Provided Content ---
 const markdownContent = {
     concepts: `
-# C Language Concepts
+# Formatting
 
-## 1. Pointers
-In C, a pointer is a variable that stores the memory address of another variable. They are one of the most powerful and distinctive features of the language.
+**Format string:** A string that dictates the structure of the output using format specifiers.
 
-### Key Ideas
-- **Declaration**: \`int *ptr;\`
-- **Initialization**: \`ptr = &variable;\`
-- **Dereferencing**: \`value = *ptr;\` (gets the value at the address)
+**Format specifiers:** Starts with \`%\` and acts as a placeholder for the things we provide in the arguments.
 
-## 2. Memory Management
-C gives you direct control over memory with functions like:
-- \`malloc()\`: Allocate a block of memory.
-- \`calloc()\`: Allocate and zero-out a block of memory.
-- \`free()\`: Release allocated memory.
-- \`realloc()\`: Resize a previously allocated block of memory.
+- **Width:** The number right after the \`%\`.
+    - Specifies the minimum number of characters for the output.
+    - Useful for inserting space to look nice.
 
-*Forgetting to \`free\` memory leads to memory leaks!*
+- **Precision:** The number that comes after the decimal point.
+    - Controls the number of digits to show after the decimal point.
+
+---
+### Examples
+
+\`%d\`: for printing an integer
+\`%f\`: for printing a float (with any no. of decimal spaces)
+
+\`%4d\` or \`%4f\`: for printing a number that is at least 4 characters wide.
+\`\`\`c
+// adds 2 spaces before 69 since the minimum width is 4 and 69 is just 2 characters
+printf("%4d", 69); // --> outputs '  69'
+\`\`\`
+
+\`%.8f\`: for printing floats with 8 digits after the decimal point.
+\`\`\`c
+// outputs 3.141592654 (9 digits after the decimal point). 
+// Here minimum width of 6 is met since 3.141592654 contains 11 characters.
+printf("%6.9f", 3.14159265358979323846);
+\`\`\`
+
+> \`printf\` uses \`%f\` for both \`float\` and \`double\`.
+
+---
+### Escape sequences:
+
+- \`\\t\`: prints a tab (indents text to the next tab stop).
+- \`\\n\`: moves cursor to the next line.
     `,
     code: `
-# C Code Examples
-
-## 1. Hello World
-The classic starting point for any C programmer.
-
-\`\`\`c
-#include <stdio.h>
-
-int main() {
-   printf("Hello, World!\\n");
-   return 0;
-}
-\`\`\`
-
-## 2. Simple Pointer Example
-This demonstrates how to declare, initialize, and use a pointer to access a variable's value.
-
-\`\`\`c
-#include <stdio.h>
-
-int main() {
-   int var = 20;   /* actual variable declaration */
-   int *ip;        /* pointer variable declaration */
-
-   ip = &var;  /* store address of var in pointer variable*/
-
-   printf("Address of var variable: %p\\n", (void*)&var);
-   printf("Address stored in ip variable: %p\\n", (void*)ip);
-   printf("Value of *ip variable: %d\\n", *ip);
-
-   return 0;
-}
-\`\`\`
+<!-- The Code tab is currently empty. -->
     `
 };
 
