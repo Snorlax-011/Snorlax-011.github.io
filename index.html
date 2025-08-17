@@ -18,34 +18,25 @@
 </head>
 <body>
 
-    <!-- This div is for the moving particle background -->
     <div id="tsparticles"></div>
 
-    <!-- Main content container -->
     <main class="content-container">
 
-        <!-- Hero Section -->
         <header class="hero-section">
             <h1>Abhijith's Portfolio</h1>
             <p class="subtitle">Welcome to my corner of the web. Brace yourselves!</p>
         </header>
 
-        <!-- Main Tabs -->
         <div class="main-tabs">
             <button class="main-tab-link active" onclick="openMainTab(event, 'MyJourney')">My Journey</button>
-            <!-- You can add more main tabs like "Projects" or "Contact" here later -->
         </div>
 
-        <!-- Main Tab Content -->
         <div id="MyJourney" class="main-tab-content" style="display: block;">
             
-            <!-- Sub Tabs (for languages like C, Python, etc.) -->
             <div class="sub-tabs">
                 <button class="sub-tab-link active" onclick="openSubTab(event, 'C_Repo')">C</button>
-                <!-- You can add more language tabs here later -->
             </div>
 
-            <!-- Sub Tab Content -->
             <div id="C_Repo" class="sub-tab-content" style="display: block;">
                 <h2>The C Programming Language</h2>
                 <div class="tabs">
@@ -53,21 +44,28 @@
                     <button class="tab-link" onclick="openContentTab(event, 'Code')">Code</button>
                 </div>
 
-                <!-- Concepts Tab Content -->
+                <!-- Concepts Content Area -->
                 <div id="Concepts" class="tab-content" style="display: block;">
-                    <div id="concepts-content" class="markdown-body">
-                        <p>Loading concepts...</p>
+                    <!-- NEW: File tabs for each concept -->
+                    <div class="file-tabs">
+                        <button class="file-tab-link active" onclick="openFileTab(event, 'FormattingFile')">Formatting</button>
+                        <button class="file-tab-link" onclick="openFileTab(event, 'WhileLoopFile')">While Loop</button>
+                        <button class="file-tab-link" onclick="openFileTab(event, 'ForLoopFile')">For Loop</button>
                     </div>
+
+                    <!-- NEW: Content divs for each file -->
+                    <div id="FormattingFile" class="file-tab-content markdown-body" style="display: block;"></div>
+                    <div id="WhileLoopFile" class="file-tab-content markdown-body" style="display: none;"></div>
+                    <div id="ForLoopFile" class="file-tab-content markdown-body" style="display: none;"></div>
                 </div>
 
-                <!-- Code Tab Content -->
+                <!-- Code Content Area -->
                 <div id="Code" class="tab-content">
                     <div id="code-content" class="markdown-body">
-                        <p>Loading code examples...</p>
+                         <p>Code examples will be added here.</p>
                     </div>
                 </div>
             </div>
-            <!-- Add other language content blocks here (e.g., id="Python_Repo") -->
         </div>
 
     </main>
@@ -78,7 +76,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
-    <!-- Link to your JavaScript file -->
     <script src="script.js"></script>
 
 </body>
