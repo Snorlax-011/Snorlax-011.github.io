@@ -63,19 +63,18 @@ while (/* some condition */)
 
 ### Syntax
 \`\`\`c
-for (initialization; condition; increment)
+for(initialization; condition; increment)
 {
     /*
-     * body of the loop
+     * body
      */
 }
 \`\`\`
 
-### Execution Flow
-1.  The **initialization** statement is executed once at the very beginning.
-2.  The **condition** is evaluated. If it's true, the body of the loop is executed.
-3.  The **increment** statement is executed after the body.
-4.  The process repeats from step 2. The loop terminates when the **condition** becomes false.
+After initialization, the condition will be evaluated and if it's true, the body will be executed.
+Then occurs the increment and the condition will be re-evaluated....
+
+The program will exit the loop when the condition isn't met.
     `,
     code: `
 <!-- The Code tab is currently empty. -->
