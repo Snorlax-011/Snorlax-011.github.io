@@ -40,6 +40,22 @@ printf("%6.9f", 3.14159265358979323846);
 
 - \`\\t\`: prints a tab (indents text to the next tab stop).
 - \`\\n\`: moves cursor to the next line.
+
+---
+
+# While Loop
+
+### Syntax
+\`\`\`c
+while (/* some condition */)
+{
+    /*
+     * code to be executed
+     */
+}
+\`\`\`
+
+**"while"** the condition in the parentheses is true, the body (code) of the loop will be executed. The condition is tested before each iteration. The loop continues until the condition becomes false, at which point the loop ends.
     `,
     code: `
 <!-- The Code tab is currently empty. -->
