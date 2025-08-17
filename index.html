@@ -30,27 +30,44 @@
             <p class="subtitle">Welcome to my corner of the web. Brace yourselves!</p>
         </header>
 
-        <!-- C Repository Content (No longer in a 'section' block) -->
-        <h2>C Repository: The C Programming Language</h2>
-        <div class="tabs">
-            <button class="tab-link active" onclick="openTab(event, 'Concepts')">Concepts</button>
-            <button class="tab-link" onclick="openTab(event, 'Code')">Code</button>
+        <!-- Main Tabs -->
+        <div class="main-tabs">
+            <button class="main-tab-link active" onclick="openMainTab(event, 'MyJourney')">My Journey</button>
+            <!-- You can add more main tabs like "Projects" or "Contact" here later -->
         </div>
 
-        <!-- Concepts Tab Content -->
-        <div id="Concepts" class="tab-content" style="display: block;">
-            <div id="concepts-content" class="markdown-body">
-                <!-- Markdown content for concepts will be loaded here -->
-                <p>Loading concepts...</p>
+        <!-- Main Tab Content -->
+        <div id="MyJourney" class="main-tab-content" style="display: block;">
+            
+            <!-- Sub Tabs (for languages like C, Python, etc.) -->
+            <div class="sub-tabs">
+                <button class="sub-tab-link active" onclick="openSubTab(event, 'C_Repo')">C</button>
+                <!-- You can add more language tabs here later -->
             </div>
-        </div>
 
-        <!-- Code Tab Content -->
-        <div id="Code" class="tab-content">
-            <div id="code-content" class="markdown-body">
-                <!-- Markdown content for code will be loaded here -->
-                <p>Loading code examples...</p>
+            <!-- Sub Tab Content -->
+            <div id="C_Repo" class="sub-tab-content" style="display: block;">
+                <h2>The C Programming Language</h2>
+                <div class="tabs">
+                    <button class="tab-link active" onclick="openContentTab(event, 'Concepts')">Concepts</button>
+                    <button class="tab-link" onclick="openContentTab(event, 'Code')">Code</button>
+                </div>
+
+                <!-- Concepts Tab Content -->
+                <div id="Concepts" class="tab-content" style="display: block;">
+                    <div id="concepts-content" class="markdown-body">
+                        <p>Loading concepts...</p>
+                    </div>
+                </div>
+
+                <!-- Code Tab Content -->
+                <div id="Code" class="tab-content">
+                    <div id="code-content" class="markdown-body">
+                        <p>Loading code examples...</p>
+                    </div>
+                </div>
             </div>
+            <!-- Add other language content blocks here (e.g., id="Python_Repo") -->
         </div>
 
     </main>
