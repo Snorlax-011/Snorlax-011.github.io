@@ -55,7 +55,6 @@ h2 {
 
 /* --- Tab Styles --- */
 
-/* Level 1: Main Tabs (My Journey) */
 .main-tabs {
     border-bottom: 2px solid var(--border-color);
     margin-bottom: 2rem;
@@ -71,7 +70,6 @@ h2 {
     border-bottom-color: var(--accent-color);
 }
 
-/* Level 2: Sub Tabs (C, Python, etc.) */
 .sub-tabs {
     margin-bottom: 2rem;
     border-bottom: 1px solid var(--border-color);
@@ -87,7 +85,6 @@ h2 {
     border-bottom-color: var(--accent-color);
 }
 
-/* Level 3: Content Tabs (Concepts, Code) */
 .tabs {
     margin-bottom: 1.5rem;
 }
@@ -101,14 +98,14 @@ h2 {
     color: var(--primary-text-color);
 }
 
-/* NEW: Level 4: File Tabs (Formatting, While Loop, etc.) */
-.file-tabs {
+/* Concepts Menu / File Tabs */
+.concepts-menu {
     display: flex;
     flex-wrap: wrap;
     border-bottom: 1px solid var(--border-color);
     margin-bottom: 2rem;
 }
-.file-tab-link {
+.menu-button {
     background: none; border: none; cursor: pointer;
     padding: 0.5rem 1rem;
     margin-right: 0.5rem;
@@ -118,21 +115,20 @@ h2 {
     border-radius: 6px;
     transition: 0.3s;
 }
-.file-tab-link:hover {
+.menu-button:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
-.file-tab-link.active {
+.menu-button.active {
     color: var(--accent-color);
     background-color: rgba(47, 129, 247, 0.1);
 }
 
 /* Generic Tab Content Styles */
-.main-tab-content, .sub-tab-content, .tab-content, .file-tab-content {
+.main-tab-content, .sub-tab-content, .tab-content, .content-part {
     animation: fadeIn 0.5s;
 }
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.content-part {
+    display: none; /* Hidden by default */
 }
 
 /* Markdown rendering */
