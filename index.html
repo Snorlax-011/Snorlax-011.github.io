@@ -28,13 +28,13 @@
         </header>
 
         <div class="main-tabs">
-            <button class="main-tab-link active" onclick="openMainTab(event, 'MyJourney')">My Journey</button>
+            <button class="main-tab-link active">My Journey</button>
         </div>
 
         <div id="MyJourney" class="main-tab-content" style="display: block;">
             
             <div class="sub-tabs">
-                <button class="sub-tab-link active" onclick="openSubTab(event, 'C_Repo')">C</button>
+                <button class="sub-tab-link active">C</button>
             </div>
 
             <div id="C_Repo" class="sub-tab-content" style="display: block;">
@@ -46,22 +46,15 @@
 
                 <!-- Concepts Content Area -->
                 <div id="Concepts" class="tab-content" style="display: block;">
-                    <!-- NEW: File tabs for each concept -->
-                    <div class="file-tabs">
-                        <button class="file-tab-link active" onclick="openFileTab(event, 'FormattingFile')">Formatting</button>
-                        <button class="file-tab-link" onclick="openFileTab(event, 'WhileLoopFile')">While Loop</button>
-                        <button class="file-tab-link" onclick="openFileTab(event, 'ForLoopFile')">For Loop</button>
-                    </div>
-
-                    <!-- NEW: Content divs for each file -->
-                    <div id="FormattingFile" class="file-tab-content markdown-body" style="display: block;"></div>
-                    <div id="WhileLoopFile" class="file-tab-content markdown-body" style="display: none;"></div>
-                    <div id="ForLoopFile" class="file-tab-content markdown-body" style="display: none;"></div>
+                    <!-- Our script will auto-fill this menu -->
+                    <div id="concepts-menu" class="file-tabs"></div>
+                    <!-- Our script will auto-fill this content area -->
+                    <div id="concepts-content-area"></div>
                 </div>
 
                 <!-- Code Content Area -->
                 <div id="Code" class="tab-content">
-                    <div id="code-content" class="markdown-body">
+                    <div class="markdown-body">
                          <p>Code examples will be added here.</p>
                     </div>
                 </div>
